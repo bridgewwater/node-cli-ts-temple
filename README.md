@@ -6,8 +6,10 @@
 
 # node-cli-ts-temple
 
-https://github.com/bridgewwater/node-cli-ts-temple
+[https://github.com/bridgewwater/node-cli-ts-temple](https://github.com/bridgewwater/node-cli-ts-temple)
 
 this is for node CLI programming project.
 
 - support jest
+- support prettier
+- support rollup
