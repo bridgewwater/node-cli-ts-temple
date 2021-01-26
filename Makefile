@@ -19,7 +19,7 @@ ENV_NODE_MODULES_LOCK_FILE = ${ENV_ROOT}/package-lock.json
 utils:
 	node -v
 	npm -v
-	npm install -g commitizen cz-conventional-changelog conventional-changelog-cli
+	npm install -g commitizen cz-conventional-changelog conventional-changelog-cli npm-check-updates
 
 versionHelp:
 	@git fetch --tags
@@ -65,6 +65,10 @@ installGlobal:
 install:
 	npm install
 
+upgradeAll:
+	ncu -u
+	npm ci
+
 installAll: utils installGlobal install
 	@echo "=> install all finish"
 
@@ -107,6 +111,7 @@ help:
 	@echo "Warning: must install node and install module as"
 	@echo "$$ make installGlobal       ~> install must tools at global"
 	@echo "$$ make install             ~> install project"
+	@echo "$$ make upgradeAll          ~> upgrade node_module and reinstall"
 	@echo "$$ make installAll          ~> install all include global utils and node_module"
 	@echo "$$ make lint                ~> run eslint"
 	@echo " unit test as"
