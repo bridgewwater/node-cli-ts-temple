@@ -6,17 +6,18 @@ import fsExtra from 'fs-extra'
 import pkgInfo from '../../package.json'
 import extend from 'extend'
 import { logDebug } from '../nlog/nLog'
+import { binName } from '../utils/pkgInfo'
 
 export const userConfigFolder = (): string => {
   let userHome = USER_HOME
   if (!userHome) {
     userHome = '~'
   }
-  return path.join(userHome, `.${pkgInfo.name}`)
+  return path.join(userHome, `.${binName()}`)
 }
 
 export const userConfigJsonPath = (): string => {
-  return path.join(userConfigFolder(), `${pkgInfo.name}-cfg.json`)
+  return path.join(userConfigFolder(), `${binName()}-cfg.json`)
 }
 
 export const initUserHomeConfig = (config?: ICfgSetting): void => {

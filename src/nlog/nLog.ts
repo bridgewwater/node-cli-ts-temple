@@ -4,6 +4,7 @@ import log4js from 'log4js'
 import path from 'path'
 import moment from 'moment'
 import fsExtra from 'fs-extra'
+import { binName } from '../utils/pkgInfo'
 
 const noColor = new chalk.Instance({ level: 0 })
 let isNoColor = false
@@ -16,7 +17,7 @@ const userConfigFolder = (): string => {
   if (!userHome) {
     userHome = '~'
   }
-  return path.join(userHome, `.${pkgInfo.name}`)
+  return path.join(userHome, `.${binName()}`)
 }
 const userLoggerFolder = (): string => {
   return path.join(userConfigFolder(), 'logs')
@@ -29,7 +30,7 @@ export const writeLogsUser = (level?: string): void => {
   }
   const logFileFullPath = path.join(
     userLoggerFolder(),
-    `${pkgInfo.name}-${moment(new Date(), moment.defaultFormat).format('YYYY-MM-DD-HH-mm')}.log`
+    `${binName()}-${moment(new Date(), moment.defaultFormat).format('YYYY-MM-DD-HH-mm')}.log`
   )
   log4js.configure({
     appenders: {
@@ -50,7 +51,7 @@ export const writeLogsUser = (level?: string): void => {
 }
 
 const logFile = (): log4js.Logger => {
-  return log4js.getLogger(pkgInfo.name)
+  return log4js.getLogger(binName())
 }
 
 const log = (): chalk.Chalk => {

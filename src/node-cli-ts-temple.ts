@@ -1,11 +1,11 @@
 import { Command } from 'commander'
-import { pkgInfo } from './utils/pkgInfo'
+import { binName, pkgInfo } from './utils/pkgInfo'
 import { checkUpdate } from './utils/checkUpdate'
 import { createApp } from './biz'
 import { initUserHomeConfig } from './config/userConfig'
 import { cleanUserHomeLogs, logDebug, noNoColor, openVerbose, verbose, writeLogsUser } from './nlog/nLog'
 
-const program = new Command(pkgInfo.name)
+const program = new Command(binName())
 
 /**
  * initialization command
@@ -15,7 +15,7 @@ export const initCommand = (): void => {
 
   program
     .arguments('<appName>')
-    .description(`description change name: ${pkgInfo.name}`)
+    .description(`description change name: ${binName()}`)
     .option('--verbose', 'output verbose')
     .on('option:verbose', (): void => {
       openVerbose()
@@ -36,11 +36,11 @@ export const initCommand = (): void => {
   program.option('--clean-logs', '[+|-] clean logs', false)
 
   program.on('--help', () => {
-    console.log(`\nRun: ${pkgInfo.name} -h | --help command usage.\n`)
+    console.log(`\nUse: ${binName()} -h | --help command usage.\n`)
   })
 
   program
-    .version(`${pkgInfo.name} ${pkgInfo.version}`, '-v, --version', 'view version information')
+    .version(`${binName()} ${pkgInfo.version}`, '-v, --version', 'view version information')
     .helpOption('-h, --help', 'view help information')
     .usage('[path]')
 

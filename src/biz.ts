@@ -1,11 +1,12 @@
 import inquirer from 'inquirer'
 import path from 'path'
 import chalk from 'chalk'
-import { pkgInfo } from './utils/pkgInfo'
+import { binName, pkgInfo } from './utils/pkgInfo'
 import { isExistPath } from './utils/filePlus'
 import { downloadTemplate } from './templatedownload/downloadTemplate'
 import { logWarning } from './nlog/nLog'
 import { run } from './utils/cmdRunner'
+import { force } from './config'
 
 /**
  * command prompt
@@ -52,6 +53,10 @@ const initGit = (initPath: string = process.cwd()) => {
 const initPrompt = (name: string, template: string) => {
   inquirer.prompt(prompts).then(({ git, selectInstall }) => {
     const fullPath = path.resolve(path.join(process.cwd(), name))
+    if (!force()) {
+      return
+    }
+
     downloadTemplate(name, template)
     // installDependencie(selectInstall, fullPath)
 
@@ -77,6 +82,6 @@ export const createApp = (name: string, template: string): void => {
   }
 
   console.clear() // clear the console
-  process.stdout.write(chalk.bold.cyan(`${pkgInfo.name} v${pkgInfo.version}\n`), 'utf-8')
+  process.stdout.write(chalk.bold.cyan(`${binName()} v${pkgInfo.version}\n`), 'utf-8')
   initPrompt(name, template)
 }
