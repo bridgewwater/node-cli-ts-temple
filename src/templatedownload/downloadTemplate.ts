@@ -38,14 +38,13 @@ export const downloadTemplate = (name: string, template = nodeTemplate().templat
     }
   }
 
-  console.log('\ntemplate downloading...')
+  console.log('\n-> template downloading...\n')
   run({
     ...runParams,
     isStdio: true
   })
-  console.log('template download complete. \n')
+  console.log('\n-> template download complete.\n')
 
   // remove existing git records
   fsExtra.removeSync(`${currentPath}/${name}/.git`)
-  run({ cmd: 'rm', args: ['-rf', '.git'], cwd: `${currentPath}/${name}` })
 }

@@ -1,7 +1,7 @@
 import { Command } from 'commander'
 import { binName, pkgInfo } from './utils/pkgInfo'
 import { checkUpdate } from './utils/checkUpdate'
-import { createApp } from './biz'
+import { createNodeApp } from './biz'
 import { initUserHomeConfig } from './config/userConfig'
 import { cleanUserHomeLogs, logDebug, noNoColor, openVerbose, verbose, writeLogsUser } from './nlog/nLog'
 
@@ -24,7 +24,7 @@ export const initCommand = (): void => {
     .option('-t, --template <path>', 'template address, support git address and local path')
     .action((appName, cmd) => {
       checkUpdate()
-      createApp(appName, cmd.template)
+      createNodeApp(appName, cmd.template)
     })
   program.option('--log', '[-|+] open log file out put', false).on('option:log', (): void => {
     writeLogsUser()

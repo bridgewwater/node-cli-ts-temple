@@ -1,12 +1,13 @@
 import inquirer from 'inquirer'
 import path from 'path'
 import chalk from 'chalk'
-import { binName, pkgInfo } from './utils/pkgInfo'
 import { isExistPath } from './utils/filePlus'
 import { downloadTemplate } from './templatedownload/downloadTemplate'
 import { logWarning } from './nlog/nLog'
 import { run } from './utils/cmdRunner'
 import { force } from './config'
+import { nodeTemplate } from './config/userConfig'
+import GitURLParse from 'git-url-parse'
 
 /**
  * command prompt
@@ -70,18 +71,25 @@ const initPrompt = (name: string, template: string) => {
 
 /**
  * new project
- * @param name - project name
+ * @param name - project nameN
  * @param template - Template address. git or local path
  */
-export const createApp = (name: string, template: string): void => {
+export const createNodeApp = (name: string, template?: string): void => {
   const fullPath = path.resolve(path.join(process.cwd(), name))
 
   if (isExistPath(fullPath)) {
     logWarning(`Warn: already exists in the current directory at: ${name}`)
     return
   }
+  let nodeTemplateURL = nodeTemplate().templateUrl as string
+  if (template != null) {
+    nodeTemplateURL = template
+  }
+
+  const gitURLParse = GitURLParse(nodeTemplateURL)
+  const templateHttpURL = `${gitURLParse.protocol}://${gitURLParse.source}/${gitURLParse.owner}/${gitURLParse.name}`
 
   console.clear() // clear the console
-  process.stdout.write(chalk.bold.cyan(`${binName()} v${pkgInfo.version}\n`), 'utf-8')
-  initPrompt(name, template)
+  process.stdout.write(chalk.bold.cyan(`create node project from template: ${templateHttpURL}\n`), 'utf-8')
+  initPrompt(name, nodeTemplateURL)
 }
