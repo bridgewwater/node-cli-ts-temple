@@ -1,34 +1,36 @@
-import pkgInfo from '../../package.json';
-import chalk from 'chalk';
-import log4js from 'log4js';
-import path from 'path';
-import moment from 'moment';
-import fsExtra from 'fs-extra';
+import pkgInfo from '../../package.json'
+import chalk from 'chalk'
+import log4js from 'log4js'
+import path from 'path'
+import moment from 'moment'
+import fsExtra from 'fs-extra'
 
-const noColor = new chalk.Instance({ level: 0 });
-let isNoColor = false;
-let isNoLogFile = true;
-let isVerbose = false;
+const noColor = new chalk.Instance({ level: 0 })
+let isNoColor = false
+let isNoLogFile = true
+let isVerbose = false
 
-const USER_HOME = process.env.HOME || process.env.USERPROFILE;
+const USER_HOME = process.env.HOME || process.env.USERPROFILE
 const userConfigFolder = (): string => {
-  let userHome = USER_HOME;
+  let userHome = USER_HOME
   if (!userHome) {
-    userHome = '~';
+    userHome = '~'
   }
-  return path.join(userHome, `.${pkgInfo.name}`);
-};
+  return path.join(userHome, `.${pkgInfo.name}`)
+}
 const userLoggerFolder = (): string => {
-  return path.join(userConfigFolder(), 'logs');
-};
+  return path.join(userConfigFolder(), 'logs')
+}
 
 export const writeLogsUser = (level?: string): void => {
-  let logLevel = 'debug';
+  let logLevel = 'debug'
   if (level) {
-    logLevel = level;
+    logLevel = level
   }
-  const logFileFullPath = path.join(userLoggerFolder(),
-    `${pkgInfo.name}-${moment(new Date(), moment.defaultFormat).format('YYYY-MM-DD-HH-mm')}.log`);
+  const logFileFullPath = path.join(
+    userLoggerFolder(),
+    `${pkgInfo.name}-${moment(new Date(), moment.defaultFormat).format('YYYY-MM-DD-HH-mm')}.log`
+  )
   log4js.configure({
     appenders: {
       'node-cli-ts-temple': {
@@ -42,77 +44,75 @@ export const writeLogsUser = (level?: string): void => {
         level: logLevel
       }
     }
-  });
-  isNoLogFile = false;
-  console.log(`writeLogsUser at: ${logFileFullPath}`);
-};
+  })
+  isNoLogFile = false
+  console.log(`writeLogsUser at: ${logFileFullPath}`)
+}
 
 const logFile = (): log4js.Logger => {
-  return log4js.getLogger(pkgInfo.name);
-};
+  return log4js.getLogger(pkgInfo.name)
+}
 
 const log = (): chalk.Chalk => {
   if (isNoColor) {
-    return noColor;
+    return noColor
   }
-  return chalk;
-};
-
+  return chalk
+}
 
 export const logInfo = (message: string): void => {
-  console.log(log().green(message));
+  console.log(log().green(message))
   if (!isNoLogFile) {
-    logFile().info(message);
+    logFile().info(message)
   }
-
-};
+}
 
 export const logDebug = (message: string): void => {
   if (isVerbose) {
-    console.log(log().blue(message));
+    console.log(log().blue(message))
     if (!isNoLogFile) {
-      logFile().debug(message);
+      logFile().debug(message)
     }
   }
-};
+}
 
 export const logWarning = (message: string): void => {
-  console.log(log().keyword('orange')(message));
+  console.log(log().keyword('orange')(message))
   if (!isNoLogFile) {
-    logFile().warn(message);
+    logFile().warn(message)
   }
-};
+}
 
 export const logError = (message: string): void => {
-  console.log(log().bold.red(message));
+  console.log(log().bold.red(message))
   if (!isNoLogFile) {
-    logFile().error(message);
+    logFile().error(message)
   }
-};
+}
 
 export const openVerbose = (): void => {
-  isVerbose = true;
-};
+  isVerbose = true
+}
 
 export const verbose = (): boolean => {
-  return isVerbose;
-};
+  return isVerbose
+}
 
 export const noNoColor = (): void => {
-  isNoColor = true;
-};
+  isNoColor = true
+}
 
 export const noLogFile = (): void => {
-  isNoLogFile = false;
-};
+  isNoLogFile = false
+}
 
 export const cleanUserHomeLogs = (): void => {
-  const userFolder = userLoggerFolder();
+  const userFolder = userLoggerFolder()
   if (fsExtra.existsSync(userFolder)) {
-    fsExtra.removeSync(userFolder);
-    logInfo(`clean USER_HOME logs at: ${userFolder}`);
+    fsExtra.removeSync(userFolder)
+    logInfo(`clean USER_HOME logs at: ${userFolder}`)
   }
-};
+}
 
 // interface INLog extends Object {
 //   openVerbose(): void

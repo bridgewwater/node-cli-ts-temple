@@ -14,7 +14,7 @@
   "scripts": {
     "clean:rimraf": "rimraf node_modules package-lock.json",
     "lint": "eslint src --fix --ext .js,.ts",
-    "format": "prettier --write --parser typescript src/**/*.ts",
+    "format": "prettier --write --parser typescript src/*.ts src/**/*.ts tests/**/*.ts",
     "start": "node dist/index.js",
     "dev": "nodemon",
     "build": "rollup -c",

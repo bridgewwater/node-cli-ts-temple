@@ -1,9 +1,9 @@
-let isForce = false;
+let isForce = false
 
 export const openForce = (): void => {
-  isForce = true;
-};
+  isForce = true
+}
 
 export const force = (): boolean => {
-  return isForce;
-};
+  return isForce
+}

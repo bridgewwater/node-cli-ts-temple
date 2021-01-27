@@ -1,5 +1,5 @@
-import { ICmdParams } from './ICmdParams';
-import { spawnSync, SpawnSyncReturns } from 'child_process';
+import { ICmdParams } from './ICmdParams'
+import { spawnSync, SpawnSyncReturns } from 'child_process'
 
 /**
  * run cmd
@@ -18,5 +18,5 @@ export const run = ({
     cwd,
     stdio: isStdio ? 'inherit' : undefined,
     shell: true
-  });
-};
+  })
+}

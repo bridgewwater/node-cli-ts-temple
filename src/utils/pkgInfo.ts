@@ -1,2 +1,2 @@
-import pkgInfo from '../../package.json';
-export { pkgInfo };
+import pkgInfo from '../../package.json'
+export { pkgInfo }

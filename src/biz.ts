@@ -1,10 +1,11 @@
-import inquirer from 'inquirer';
-import path from 'path';
-import chalk from 'chalk';
-import { pkgInfo } from './utils/pkgInfo';
-import { isExistPath } from './utils/filePlus';
-import {downloadTemplate} from './templatedownload/downloadTemplate';
-import { logWarning } from './nlog/nLog';
+import inquirer from 'inquirer'
+import path from 'path'
+import chalk from 'chalk'
+import { pkgInfo } from './utils/pkgInfo'
+import { isExistPath } from './utils/filePlus'
+import { downloadTemplate } from './templatedownload/downloadTemplate'
+import { logWarning } from './nlog/nLog'
+import { run } from './utils/cmdRunner'
 
 /**
  * command prompt
@@ -32,26 +33,35 @@ const prompts = [
       }
     ]
   }
-];
+]
+
+const initGit = (initPath: string = process.cwd()) => {
+  run({ cmd: 'git', args: ['init'], cwd: initPath, isStdio: false })
+  run({ cmd: 'git', args: ['add', '.'], cwd: initPath, isStdio: false })
+  run({
+    cmd: 'git',
+    args: ['commit', '-m', '"init commit"'],
+    cwd: initPath,
+    isStdio: false
+  })
+}
 
 /**
  * Initialize command prompt
  */
 const initPrompt = (name: string, template: string) => {
   inquirer.prompt(prompts).then(({ git, selectInstall }) => {
-    const fullPath = path.join(process.cwd(), name);
-    downloadTemplate(name, template);
+    const fullPath = path.resolve(path.join(process.cwd(), name))
+    downloadTemplate(name, template)
     // installDependencie(selectInstall, fullPath)
 
     if (git) {
-      // initGit(fullPath)
+      initGit(fullPath)
     }
 
     // initComplate()
-  });
-};
-
-
+  })
+}
 
 /**
  * new project
@@ -59,17 +69,14 @@ const initPrompt = (name: string, template: string) => {
  * @param template - Template address. git or local path
  */
 export const createApp = (name: string, template: string): void => {
-  const fullPath = `${process.cwd()}/${name}`;
+  const fullPath = path.resolve(path.join(process.cwd(), name))
 
   if (isExistPath(fullPath)) {
-    logWarning(`${name} already exists in the current directory`);
-    return;
+    logWarning(`Warn: already exists in the current directory at: ${name}`)
+    return
   }
 
-  console.clear(); // clear the console
-  process.stdout.write(
-    chalk.bold.cyan(`${pkgInfo.name} v${pkgInfo.version}\n`),
-    'utf-8'
-  );
-  initPrompt(name, template);
-};
+  console.clear() // clear the console
+  process.stdout.write(chalk.bold.cyan(`${pkgInfo.name} v${pkgInfo.version}\n`), 'utf-8')
+  initPrompt(name, template)
+}

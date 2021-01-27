@@ -1,9 +1,9 @@
-let isVerbose = false;
+let isVerbose = false
 
 export const openVerbose = (): void => {
-  isVerbose = true;
-};
+  isVerbose = true
+}
 
 export const verbose = (): boolean => {
-  return isVerbose;
-};
+  return isVerbose
+}

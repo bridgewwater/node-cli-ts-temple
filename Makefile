@@ -78,7 +78,7 @@ format:
 lint: format
 	npm run lint
 
-test:
+test: format
 	npm run test
 
 testCoverage:

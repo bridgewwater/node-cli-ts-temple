@@ -19,14 +19,14 @@ module.exports = {
     ],
     quotes: ['error', 'single'],
     'no-else-return': ['error', { allowElseIf: false }],
-    semi: ['error', 'always'],
+    semi: ['error', 'never'],
     'no-console': 'off',
     'camelcase': [
       2,
       {
         'properties': 'never'
       }
-    ],
+    ]
     // let can use any
     // '@typescript-eslint/no-explicit-any': ['off']
   }

@@ -1,4 +1,4 @@
-import pkgInfo from '../../package.json';
+import pkgInfo from '../../package.json'
 
 export interface NodeTemplate {
   templateUrl: string
@@ -16,4 +16,4 @@ export const CfgSetting: ICfgSetting = {
   nodeTemplate: {
     templateUrl: 'https://github.com/bridgewwater/node-cli-ts-temple.git'
   }
-};
+}

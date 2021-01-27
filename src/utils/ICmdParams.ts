@@ -1,4 +1,4 @@
-import { CMDType } from './cmdType';
+import { CMDType } from './cmdType'
 
 /**
  * Define the parameters of the run command

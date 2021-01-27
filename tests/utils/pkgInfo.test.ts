@@ -1,5 +1,5 @@
-import { pkgInfo } from '../../src/utils/pkgInfo';
+import { pkgInfo } from '../../src/utils/pkgInfo'
 
-test('pkgInfo', ()=>{
-  expect(pkgInfo).not.toBe(NaN);
+test('pkgInfo', () => {
+  expect(pkgInfo).not.toBe(NaN)
 })
