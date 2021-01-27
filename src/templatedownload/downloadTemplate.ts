@@ -2,7 +2,7 @@ import fsExtra from 'fs-extra';
 import { ICmdParams } from '../utils/ICmdParams';
 import { CMDType } from '../utils/cmdType';
 import { run } from '../utils/cmdRunner';
-import { loadUserHomeConfig } from '../config/userConfig';
+import { nodeTemplate } from '../config/userConfig';
 import { verbose } from '../config/RunMode';
 
 /**
@@ -10,10 +10,7 @@ import { verbose } from '../config/RunMode';
  * @param name - project name
  * @param template - template path default:
  */
-export const downloadTemplate = (
-  name: string,
-  template = loadUserHomeConfig().node_template.template_url
-): void => {
+export const downloadTemplate = (name: string, template = nodeTemplate().templateUrl): void => {
   const isGitTemplate = /\.git/.test(template);
   const currentPath = process.cwd();
   let runParams: ICmdParams = {

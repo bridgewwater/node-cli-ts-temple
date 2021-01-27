@@ -1,9 +1,9 @@
-let is_verbose = false;
+let isVerbose = false;
 
-export const open_verbose = function () {
-  is_verbose = true;
+export const openVerbose = (): void => {
+  isVerbose = true;
 };
 
-export const verbose = function () {
-  return is_verbose;
+export const verbose = (): boolean => {
+  return isVerbose;
 };

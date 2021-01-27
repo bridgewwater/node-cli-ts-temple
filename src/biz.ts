@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import { pkgInfo } from './utils/pkgInfo';
 import { isExistPath } from './utils/filePlus';
 import {downloadTemplate} from './templatedownload/downloadTemplate';
-import { verbose } from './config/RunMode';
+import { logWarning } from './nlog/nLog';
 
 /**
  * command prompt
@@ -62,7 +62,7 @@ export const createApp = (name: string, template: string): void => {
   const fullPath = `${process.cwd()}/${name}`;
 
   if (isExistPath(fullPath)) {
-    console.log(`${chalk.cyan(name)} already exists in the current directory`);
+    logWarning(`${name} already exists in the current directory`);
     return;
   }
 

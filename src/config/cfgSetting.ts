@@ -1,10 +1,19 @@
 import pkgInfo from '../../package.json';
 
-export const CfgSetting = {
+export interface NodeTemplate {
+  templateUrl: string
+}
+
+export interface ICfgSetting {
+  name: string
+  version: string
+  nodeTemplate: NodeTemplate
+}
+
+export const CfgSetting: ICfgSetting = {
   name: pkgInfo.name,
   version: pkgInfo.version,
-  node_template: {
-    template_url: 'https://github.com/bridgewwater/node-cli-ts-temple.git'
+  nodeTemplate: {
+    templateUrl: 'https://github.com/bridgewwater/node-cli-ts-temple.git'
   }
 };
-
