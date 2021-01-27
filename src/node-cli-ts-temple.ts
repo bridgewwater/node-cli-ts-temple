@@ -19,7 +19,7 @@ export const initCommand = (): void => {
       `description change name: ${binName()}\n
   global config path: ${userConfigFolder()}`
     )
-    .option('--verbose', 'output verbose')
+    .option('-v, --verbose', 'output verbose')
     .on('option:verbose', (): void => {
       openVerbose()
       logDebug(`-> now debug ${verbose()}`)
@@ -43,7 +43,7 @@ export const initCommand = (): void => {
   })
 
   program
-    .version(`${binName()} ${pkgInfo.version}`, '-v, --version', 'view version information')
+    .version(`${binName()} ${pkgInfo.version}`, '--version', 'view version information')
     .helpOption('-h, --help', 'view help information')
     .usage('[path]')
 
