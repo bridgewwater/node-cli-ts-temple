@@ -2,7 +2,7 @@ import { Command } from 'commander'
 import { binName, pkgInfo } from './utils/pkgInfo'
 import { checkUpdate } from './utils/checkUpdate'
 import { createNodeApp } from './biz'
-import { initUserHomeConfig } from './config/userConfig'
+import { initUserHomeConfig, userConfigFolder } from './config/userConfig'
 import { cleanUserHomeLogs, logDebug, noNoColor, openVerbose, verbose, writeLogsUser } from './nlog/nLog'
 
 const program = new Command(binName())
@@ -15,7 +15,10 @@ export const initCommand = (): void => {
 
   program
     .arguments('<appName>')
-    .description(`description change name: ${binName()}`)
+    .description(
+      `description change name: ${binName()}\n
+  global config path: ${userConfigFolder()}`
+    )
     .option('--verbose', 'output verbose')
     .on('option:verbose', (): void => {
       openVerbose()

@@ -3,7 +3,6 @@ import { CfgSetting, ICfgSetting, NodeTemplate } from './cfgSetting'
 const USER_HOME = process.env.HOME || process.env.USERPROFILE
 import path from 'path'
 import fsExtra from 'fs-extra'
-import pkgInfo from '../../package.json'
 import extend from 'extend'
 import { logDebug } from '../nlog/nLog'
 import { binName } from '../utils/pkgInfo'

@@ -13,14 +13,16 @@
   },
   "scripts": {
     "clean:rimraf": "rimraf node_modules package-lock.json",
-    "lint": "eslint src --fix --ext .js,.ts",
     "format": "prettier --write --parser typescript src/*.ts src/**/*.ts tests/**/*.ts",
+    "lint": "eslint src --fix --ext .js,.ts",
+    "postlint": "tslint --project .",
     "start": "node dist/index.js",
     "dev": "nodemon",
     "build": "rollup -c",
     "tsc": "tsc",
     "test": "jest",
-    "jest:coverage": "jest --collectCoverage"
+    "jest:coverage": "jest --collectCoverage",
+    "cli:help": "node dist/index.js -h"
   },
   "jest": {
     "testEnvironment": "node"

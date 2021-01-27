@@ -1,13 +1,13 @@
 import inquirer from 'inquirer'
 import path from 'path'
 import chalk from 'chalk'
-import { isExistPath } from './utils/filePlus'
-import { downloadTemplate } from './templatedownload/downloadTemplate'
-import { logWarning } from './nlog/nLog'
-import { run } from './utils/cmdRunner'
-import { force } from './config'
-import { nodeTemplate } from './config/userConfig'
 import GitURLParse from 'git-url-parse'
+import { isExistPath } from './utils/filePlus'
+import { downloadTemplate } from './gitHelp/downloadTemplate'
+import { nodeTemplate } from './config/userConfig'
+import { initGitLocal } from './gitHelp/gitLocalInit'
+import { installDependencies } from './language/node/nodeInstallDependencie'
+import { ProjectInitComplete, WarnToSafeExit } from './globalBiz'
 
 /**
  * command prompt
@@ -26,27 +26,16 @@ const prompts = [
     default: 'npm',
     choices: [
       {
-        name: 'use yarn',
-        value: 'yarn'
-      },
-      {
         name: 'ues npm',
         value: 'npm'
+      },
+      {
+        name: 'use yarn',
+        value: 'yarn'
       }
     ]
   }
 ]
-
-const initGit = (initPath: string = process.cwd()) => {
-  run({ cmd: 'git', args: ['init'], cwd: initPath, isStdio: false })
-  run({ cmd: 'git', args: ['add', '.'], cwd: initPath, isStdio: false })
-  run({
-    cmd: 'git',
-    args: ['commit', '-m', '"init commit"'],
-    cwd: initPath,
-    isStdio: false
-  })
-}
 
 /**
  * Initialize command prompt
@@ -54,18 +43,15 @@ const initGit = (initPath: string = process.cwd()) => {
 const initPrompt = (name: string, template: string) => {
   inquirer.prompt(prompts).then(({ git, selectInstall }) => {
     const fullPath = path.resolve(path.join(process.cwd(), name))
-    if (!force()) {
-      return
-    }
 
     downloadTemplate(name, template)
-    // installDependencie(selectInstall, fullPath)
+    installDependencies(selectInstall, fullPath)
 
     if (git) {
-      initGit(fullPath)
+      initGitLocal(fullPath)
     }
 
-    // initComplate()
+    ProjectInitComplete()
   })
 }
 
@@ -78,7 +64,7 @@ export const createNodeApp = (name: string, template?: string): void => {
   const fullPath = path.resolve(path.join(process.cwd(), name))
 
   if (isExistPath(fullPath)) {
-    logWarning(`Warn: already exists in the current directory at: ${name}`)
+    WarnToSafeExit(`Warn: new project path already exists in the current directory at: ${name}`)
     return
   }
   let nodeTemplateURL = nodeTemplate().templateUrl as string
@@ -89,7 +75,7 @@ export const createNodeApp = (name: string, template?: string): void => {
   const gitURLParse = GitURLParse(nodeTemplateURL)
   const templateHttpURL = `${gitURLParse.protocol}://${gitURLParse.source}/${gitURLParse.owner}/${gitURLParse.name}`
 
-  console.clear() // clear the console
+  // console.clear() // clear the console
   process.stdout.write(chalk.bold.cyan(`create node project from template: ${templateHttpURL}\n`), 'utf-8')
   initPrompt(name, nodeTemplateURL)
 }

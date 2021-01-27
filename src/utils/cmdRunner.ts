@@ -8,7 +8,7 @@ import { spawnSync, SpawnSyncReturns } from 'child_process'
  * @param cwd - path default process.cwd()
  * @param isStdio - spawnSync default inherit
  */
-export const run = ({
+export const runCmd = ({
   args,
   cmd = 'npm',
   cwd = process.cwd(),

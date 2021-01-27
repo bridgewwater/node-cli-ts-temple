@@ -1,4 +1,3 @@
-import pkgInfo from '../../package.json'
 import chalk from 'chalk'
 import log4js from 'log4js'
 import path from 'path'
@@ -10,8 +9,31 @@ const noColor = new chalk.Instance({ level: 0 })
 let isNoColor = false
 let isNoLogFile = true
 let isVerbose = false
-
+let logFileFullPath = ''
 const USER_HOME = process.env.HOME || process.env.USERPROFILE
+
+export const openVerbose = (): void => {
+  isVerbose = true
+}
+
+export const verbose = (): boolean => {
+  return isVerbose
+}
+
+export const noNoColor = (): void => {
+  isNoColor = true
+}
+
+export const noLogFile = (): void => {
+  isNoLogFile = false
+}
+
+export const PrintLogFilePath = (): void => {
+  if (!isNoLogFile) {
+    console.log(`=> see log at: ${logFileFullPath}`)
+  }
+}
+
 const userConfigFolder = (): string => {
   let userHome = USER_HOME
   if (!userHome) {
@@ -28,7 +50,7 @@ export const writeLogsUser = (level?: string): void => {
   if (level) {
     logLevel = level
   }
-  const logFileFullPath = path.join(
+  logFileFullPath = path.join(
     userLoggerFolder(),
     `${binName()}-${moment(new Date(), moment.defaultFormat).format('YYYY-MM-DD-HH-mm')}.log`
   )
@@ -47,7 +69,6 @@ export const writeLogsUser = (level?: string): void => {
     }
   })
   isNoLogFile = false
-  console.log(`writeLogsUser at: ${logFileFullPath}`)
 }
 
 const logFile = (): log4js.Logger => {
@@ -89,22 +110,6 @@ export const logError = (message: string): void => {
   if (!isNoLogFile) {
     logFile().error(message)
   }
-}
-
-export const openVerbose = (): void => {
-  isVerbose = true
-}
-
-export const verbose = (): boolean => {
-  return isVerbose
-}
-
-export const noNoColor = (): void => {
-  isNoColor = true
-}
-
-export const noLogFile = (): void => {
-  isNoLogFile = false
 }
 
 export const cleanUserHomeLogs = (): void => {
