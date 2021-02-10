@@ -38,6 +38,8 @@ export const initCommand = (): void => {
   })
   program.option('--clean-logs', '[+|-] clean logs', false)
 
+  program.command('child-plugin', `init android plugin project, see help as: ${binName()} child-plugin --help`)
+
   program.on('--help', () => {
     console.log(`\nUse: ${binName()} -h | --help command usage.\n`)
   })
@@ -45,7 +47,7 @@ export const initCommand = (): void => {
   program
     .version(`${binName()} ${pkgInfo.version}`, '--version', 'view version information')
     .helpOption('-h, --help', 'view help information')
-    .usage('[path]')
+    .usage('-h , see child command')
 
   // No input parameters, the default help information is output in the terminal
   if (!process.argv.slice(2).length) {
