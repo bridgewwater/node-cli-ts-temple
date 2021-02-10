@@ -42,21 +42,20 @@ const prompts = [
  */
 const initPrompt = (name: string, template: string) => {
   logDebug(`select command prompt start ${isLogFile()}`)
-  inquirer.prompt(prompts)
-    .then(({ git, selectInstall }) => {
-      logDebug(`select command prompt finish ${isLogFile()}`)
-      const fullPath = path.resolve(path.join(process.cwd(), name))
+  inquirer.prompt(prompts).then(({ git, selectInstall }) => {
+    logDebug(`select command prompt finish ${isLogFile()}`)
+    const fullPath = path.resolve(path.join(process.cwd(), name))
 
-      downloadTemplate(name, template)
-      installDependencies(selectInstall, fullPath)
+    downloadTemplate(name, template)
+    installDependencies(selectInstall, fullPath)
 
-      if (git) {
-        logDebug(`initGitLocal at: ${fullPath}`)
-        initGitLocal(fullPath)
-      }
+    if (git) {
+      logDebug(`initGitLocal at: ${fullPath}`)
+      initGitLocal(fullPath)
+    }
 
-      ProjectInitComplete()
-    })
+    ProjectInitComplete()
+  })
 }
 
 /**

@@ -17,10 +17,12 @@ export const initCommand = (): void => {
     // .enablePositionalOptions()
     // .passThroughOptions()
     .option('-v, --verbose', 'output verbose')
-    .option('--log', '[-|+] open log file out put', false).on('option:log', (): void => {
+    .option('--log', '[-|+] open log file out put', false)
+    .on('option:log', (): void => {
       writeLogsUser()
     })
-    .option('--no-color', '[+|-] close color cli out put', false).on('option:no-color', (): void => {
+    .option('--no-color', '[+|-] close color cli out put', false)
+    .on('option:no-color', (): void => {
       logDebug('option:no-color')
       noNoColor()
     })
