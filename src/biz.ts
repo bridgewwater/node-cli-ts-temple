@@ -7,7 +7,7 @@ import { nodeTemplate } from './config/userConfig'
 import { initGitLocal } from './gitHelp/gitLocalInit'
 import { installDependencies } from './language/node/nodeInstallDependencie'
 import { ProjectInitComplete, WarnToSafeExit } from './globalBiz'
-import { isLogFile, logDebug, logInfo } from './nlog/nLog'
+import { logDebug, logInfo } from './nlog/nLog'
 
 /**
  * command prompt
@@ -41,9 +41,9 @@ const prompts = [
  * Initialize command prompt
  */
 const initPrompt = (name: string, template: string) => {
-  logDebug(`select command prompt start ${isLogFile()}`)
+  // logDebug(`select command prompt start ${isLogFile()}`)
   inquirer.prompt(prompts).then(({ git, selectInstall }) => {
-    logDebug(`select command prompt finish ${isLogFile()}`)
+    // logDebug(`select command prompt finish ${isLogFile()}`)
     const fullPath = path.resolve(path.join(process.cwd(), name))
 
     downloadTemplate(name, template)
