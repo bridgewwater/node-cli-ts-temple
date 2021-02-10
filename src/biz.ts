@@ -1,6 +1,5 @@
 import inquirer from 'inquirer'
 import path from 'path'
-import chalk from 'chalk'
 import GitURLParse from 'git-url-parse'
 import { isExistPath } from './utils/filePlus'
 import { downloadTemplate } from './gitHelp/downloadTemplate'
@@ -8,6 +7,7 @@ import { nodeTemplate } from './config/userConfig'
 import { initGitLocal } from './gitHelp/gitLocalInit'
 import { installDependencies } from './language/node/nodeInstallDependencie'
 import { ProjectInitComplete, WarnToSafeExit } from './globalBiz'
+import { isLogFile, logDebug, logInfo } from './nlog/nLog'
 
 /**
  * command prompt
@@ -41,18 +41,22 @@ const prompts = [
  * Initialize command prompt
  */
 const initPrompt = (name: string, template: string) => {
-  inquirer.prompt(prompts).then(({ git, selectInstall }) => {
-    const fullPath = path.resolve(path.join(process.cwd(), name))
+  logDebug(`select command prompt start ${isLogFile()}`)
+  inquirer.prompt(prompts)
+    .then(({ git, selectInstall }) => {
+      logDebug(`select command prompt finish ${isLogFile()}`)
+      const fullPath = path.resolve(path.join(process.cwd(), name))
 
-    downloadTemplate(name, template)
-    installDependencies(selectInstall, fullPath)
+      downloadTemplate(name, template)
+      installDependencies(selectInstall, fullPath)
 
-    if (git) {
-      initGitLocal(fullPath)
-    }
+      if (git) {
+        logDebug(`initGitLocal at: ${fullPath}`)
+        initGitLocal(fullPath)
+      }
 
-    ProjectInitComplete()
-  })
+      ProjectInitComplete()
+    })
 }
 
 /**
@@ -76,6 +80,7 @@ export const createNodeApp = (name: string, template?: string): void => {
   const templateHttpURL = `${gitURLParse.protocol}://${gitURLParse.source}/${gitURLParse.owner}/${gitURLParse.name}`
 
   // console.clear() // clear the console
-  process.stdout.write(chalk.bold.cyan(`create node project from template: ${templateHttpURL}\n`), 'utf-8')
+  logInfo(`create node project from template: ${templateHttpURL}`)
+  // process.stdout.write(chalk.bold.cyan(`create node project from template: ${templateHttpURL}\n`), 'utf-8')
   initPrompt(name, nodeTemplateURL)
 }

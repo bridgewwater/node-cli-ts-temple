@@ -28,6 +28,10 @@ export const noLogFile = (): void => {
   isNoLogFile = false
 }
 
+export const isLogFile = (): boolean => {
+  return isNoLogFile
+}
+
 export const PrintLogFilePath = (): void => {
   if (!isNoLogFile) {
     console.log(`=> see log at: ${logFileFullPath}`)
@@ -80,6 +84,13 @@ const log = (): chalk.Chalk => {
     return noColor
   }
   return chalk
+}
+
+export const logVerbose = (message: string): void => {
+  console.log(message)
+  if (!isNoLogFile) {
+    logFile().info(message)
+  }
 }
 
 export const logInfo = (message: string): void => {

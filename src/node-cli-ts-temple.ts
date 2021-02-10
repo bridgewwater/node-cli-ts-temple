@@ -14,40 +14,50 @@ export const initCommand = (): void => {
   initUserHomeConfig()
 
   program
-    .arguments('<appName>')
-    .description(
-      `description change name: ${binName()}\n
-  global config path: ${userConfigFolder()}`
-    )
+    // .enablePositionalOptions()
+    // .passThroughOptions()
     .option('-v, --verbose', 'output verbose')
+    .option('--log', '[-|+] open log file out put', false).on('option:log', (): void => {
+      writeLogsUser()
+    })
+    .option('--no-color', '[+|-] close color cli out put', false).on('option:no-color', (): void => {
+      logDebug('option:no-color')
+      noNoColor()
+    })
+    .option('--clean-logs', '[+|-] clean logs', false)
     .on('option:verbose', (): void => {
       openVerbose()
       logDebug(`-> now debug ${verbose()}`)
     })
-    .option('-t, --template <path>', 'template address, support git address and local path')
-    .action((appName, cmd) => {
-      checkUpdate()
-      createNodeApp(appName, cmd.template)
-    })
-  program.option('--log', '[-|+] open log file out put', false).on('option:log', (): void => {
-    writeLogsUser()
-  })
-  program.option('--no-color', '[+|-] close color cli out put', false).on('option:no-color', (): void => {
-    logDebug('option:no-color')
-    noNoColor()
-  })
-  program.option('--clean-logs', '[+|-] clean logs', false)
 
-  program.command('child-plugin', `init android plugin project, see help as: ${binName()} child-plugin --help`)
+  function makeBuildCommand() {
+    const build = new Command('build')
+    build
+      .arguments('<appName>')
+      .option('-t, --template <path>', 'template address, support git address and local path')
+      .action((appName, cmd) => {
+        checkUpdate()
+        createNodeApp(appName, cmd.template)
+      })
+      .usage('[options] <appName>')
+      .description(`clone and build project, as: ${binName()} build appName`)
+    return build
+  }
+
+  program.addCommand(makeBuildCommand())
 
   program.on('--help', () => {
     console.log(`\nUse: ${binName()} -h | --help command usage.\n`)
   })
 
   program
+    .description(
+      `description change name: ${binName()}\n
+  global config path: ${userConfigFolder()}`
+    )
     .version(`${binName()} ${pkgInfo.version}`, '--version', 'view version information')
     .helpOption('-h, --help', 'view help information')
-    .usage('-h , see child command')
+    .usage('more information see child command')
 
   // No input parameters, the default help information is output in the terminal
   if (!process.argv.slice(2).length) {

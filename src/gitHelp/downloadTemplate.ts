@@ -3,8 +3,9 @@ import { ICmdParams } from '../utils/ICmdParams'
 import { CMDType } from '../utils/cmdType'
 import { runCmd } from '../utils/cmdRunner'
 import { nodeTemplate } from '../config/userConfig'
-import { logInfo } from '../nlog/nLog'
+import { logDebug, logInfo, logVerbose } from '../nlog/nLog'
 import path from 'path'
+import { ErrorAndExit } from '../globalBiz'
 
 /**
  * download template
@@ -38,21 +39,28 @@ export const downloadTemplate = (name: string, template = nodeTemplate().templat
     }
   }
 
-  console.log('\n-> template downloading...\n')
-  runCmd({
+  logVerbose('\n-> template downloading...\n')
+  // console.log('\n-> template downloading...\n')
+  const runCmdReturn = runCmd({
     ...runParams,
     isStdio: true
   })
-  console.log('\n-> template download complete.\n')
+  if (runCmdReturn.status) {
+    ErrorAndExit(runCmdReturn.status, `error at: ${runParams.cmd} ${runParams.args}`)
+  }
+  logVerbose('\n-> template download complete.\n')
+  // console.log('\n-> template download complete.\n')
 
   const targetPath = path.join(currentPath, name)
 
   // remove existing git records
-  fsExtra.removeSync(path.join(currentPath, '.git'))
+  fsExtra.removeSync(path.join(targetPath, '.git'))
+  logDebug(`remove .git at path: ${targetPath}`)
   // remove git action set if has
   if (removeGitAction) {
     if (fsExtra.existsSync(path.join(targetPath, '.github'))) {
       fsExtra.removeSync(path.join(targetPath, '.github'))
+      logDebug(`remove git action at path: ${targetPath}`)
     }
   }
 }
