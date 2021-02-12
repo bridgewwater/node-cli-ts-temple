@@ -50,6 +50,10 @@ export const nodeTemplate = (): NodeTemplate => {
   return loadUserHomeConfig().nodeTemplate
 }
 
+export const androidTemplate = (): NodeTemplate => {
+  return loadUserHomeConfig().androidTemplate
+}
+
 export const printUserHomeConfig = (): void => {
   logDebug(loadUserHomeConfig()?.toString())
 }
