@@ -18,7 +18,7 @@ export const downloadTemplate = (name: string, template = nodeTemplate().templat
   const currentPath = process.cwd()
   let runParams: ICmdParams = {
     cmd: 'git',
-    args: ['clone', template, name]
+    args: ['clone', template, name, '--depth=1']
   }
 
   logInfo(`clone template: ${template}`)

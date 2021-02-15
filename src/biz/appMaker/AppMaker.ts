@@ -42,7 +42,7 @@ export abstract class AppMaker implements IAppMaker {
     const currentPath = process.cwd()
     let runParams: ICmdParams = {
       cmd: 'git',
-      args: ['clone', this.template, this.name]
+      args: ['clone', this.template, this.name, '--depth=1']
     }
 
     // local template, using copy
