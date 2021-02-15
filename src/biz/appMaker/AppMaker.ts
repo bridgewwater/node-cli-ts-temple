@@ -7,7 +7,7 @@ import path from 'path'
 import fsExtra from 'fs-extra'
 import lodash from 'lodash'
 import GitURLParse from 'git-url-parse'
-import { isExistPath } from '../../utils/filePlus'
+import { isExistPathSync } from '../../utils/filePlus'
 import { isPlatformWindows } from '../../utils/systemInfoUtils'
 
 interface IAppMaker {
@@ -88,7 +88,7 @@ export abstract class AppMaker implements IAppMaker {
   }
 
   doCheckAppPath(): boolean {
-    if (isExistPath(this.fullPath)) {
+    if (isExistPathSync(this.fullPath)) {
       logWarning(`Warn: new project path already exists in the current directory at: ${this.fullPath}`)
       return false
     }

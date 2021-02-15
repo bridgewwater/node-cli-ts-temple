@@ -67,6 +67,8 @@
     "inquirer": "^7.3.3",
     "log4js": "^6.3.0",
     "moment": "^2.13.0",
+    "n-readlines-next": "^1.0.3",
+    "replace-in-file": "^6.2.0",
     "update-notifier": "^5.0.1"
   },
   "engines": {
