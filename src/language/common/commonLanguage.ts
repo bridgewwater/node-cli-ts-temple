@@ -7,7 +7,7 @@ import * as fsWalk from '@nodelib/fs.walk'
 import * as path from 'path'
 
 export const replaceTextLineByLineAtPath = (
-  replacePath: string, from: string, to: string,
+  replacePath: string, from: string | RegExp, to: string,
   encoding?: 'utf-8'
 ): void => {
   const liner = new LineReader(replacePath, { readChunk: 1024, newLineCharacter: '\n' })
@@ -31,7 +31,7 @@ export const replaceTextLineByLineAtPath = (
   }
 }
 
-export const replaceTextByPathList = (from: string, to: string, ...pathList: string[]): void => {
+export const replaceTextByPathList = (from: string | RegExp, to: string, ...pathList: string[]): void => {
   if (lodash.isEmpty(pathList)) {
     return
   }
@@ -45,7 +45,7 @@ export const replaceTextByPathList = (from: string, to: string, ...pathList: str
   })
 }
 
-export const replaceTextByFileSuffix = (from: string, to: string, rootPath: string, suffix: string): void => {
+export const replaceTextByFileSuffix = (from: string | RegExp, to: string, rootPath: string, suffix: string): void => {
   let targetSuffix = suffix
   if (!targetSuffix.startsWith('.')) {
     targetSuffix = `.${suffix}`

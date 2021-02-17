@@ -1,5 +1,6 @@
 import { ICmdParams } from './ICmdParams'
 import { spawnSync, SpawnSyncReturns } from 'child_process'
+import { logDebug } from '../nlog/nLog'
 
 /**
  * run cmd
@@ -14,6 +15,7 @@ export const runCmd = ({
   cwd = process.cwd(),
   isStdio = true
 }: ICmdParams): SpawnSyncReturns<Buffer> => {
+  logDebug(`-> runCmd isStdio ${isStdio} at path: ${cwd}\n run: ${cmd} ${args}`)
   return spawnSync(cmd, args, {
     cwd,
     stdio: isStdio ? 'inherit' : undefined,
