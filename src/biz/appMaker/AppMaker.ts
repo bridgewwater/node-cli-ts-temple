@@ -82,6 +82,11 @@ export abstract class AppMaker implements IAppMaker {
     }
   }
 
+  parseTemplateSource(): string {
+    const gitURLParse = GitURLParse(this.template)
+    return `${gitURLParse.source}`
+  }
+
   parseTemplateOwnerAndName(): string {
     const gitURLParse = GitURLParse(this.template)
     return `${gitURLParse.owner}/${gitURLParse.name}`
