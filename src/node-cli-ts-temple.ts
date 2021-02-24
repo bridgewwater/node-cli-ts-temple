@@ -35,7 +35,7 @@ export const initCommand = (): void => {
   program.addCommand(cliNodeTypeScriptCLICommand())
 
   program.on('--help', () => {
-    console.log(`\nUse: ${binName()} -h | --help command usage.\n`)
+    console.log(`\nUse: ${binName()} -h | [command] --help usage.\n`)
   })
 
   program

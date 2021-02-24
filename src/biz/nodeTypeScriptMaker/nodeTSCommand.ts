@@ -7,14 +7,14 @@ import { NodeTSCLIMaker } from './NodeTSCLIMaker'
 export const cliNodeTypeScriptCLICommand = (): commander.Command => {
   const build = new Command('node-ts-cli')
   build
-    .arguments('<appName>')
+    .arguments('<targetName>')
     .option('-t, --template <path>', 'template address, support git address and local path')
-    .action(async (appName, cmd) => {
+    .action(async (targetName, cmd) => {
       checkUpdate()
-      const nodeTSCLIMaker = new NodeTSCLIMaker(appName, cmd.template)
+      const nodeTSCLIMaker = new NodeTSCLIMaker(targetName, cmd.template)
       await nodeTSCLIMaker.execute()
     })
-    .usage('[options] <appName>')
-    .description(`clone and build project, as: ${binName()} build appName`)
+    .usage('[options] <targetName>')
+    .description(`clone and build project, as: ${binName()} node-ts-cli targetName`)
   return build
 }
