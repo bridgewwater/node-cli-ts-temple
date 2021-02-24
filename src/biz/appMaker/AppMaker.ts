@@ -15,6 +15,13 @@ interface IAppMaker {
   downloadTemplate: (removeCiConfig: true) => void
 }
 
+interface ICheckPrompt {
+  itemName: string
+  target: string
+  canEmpty: boolean
+  notAllowList?: string[]
+}
+
 
 export abstract class AppMaker implements IAppMaker {
   name = 'appMaker'
@@ -31,6 +38,34 @@ export abstract class AppMaker implements IAppMaker {
       this.template = template
     }
     this.fullPath = path.resolve(path.join(process.cwd(), this.name))
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  checkPrompts(checkPrompts: ICheckPrompt[]): boolean {
+    let res = false
+    if (checkPrompts.length > 0) {
+      checkPrompts.forEach((val) => {
+        if (!val.canEmpty) {
+          if (lodash.isEmpty(val.target)) {
+            logWarning(`error: not allowed [ ${val.itemName} ] empty`)
+            res = true
+          }
+        }
+        if (!lodash.isEmpty(val.target)) {
+          if (val.notAllowList) {
+            if (val.notAllowList.length > 0) {
+              val.notAllowList.forEach((v) => {
+                if (v === val.target) {
+                  logWarning(`error: not allowed [ ${val.itemName} ] to be: ${v}`)
+                  res = true
+                }
+              })
+            }
+          }
+        }
+      })
+    }
+    return res
   }
 
   downloadTemplate(removeCiConfig: true): void {
