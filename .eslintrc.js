@@ -11,6 +11,9 @@ module.exports = {
     'prettier',
     'prettier/@typescript-eslint'
   ],
+  env:{
+    "jest": true
+  },
   rules: {
     indent: ['error', 2],
     'linebreak-style': [

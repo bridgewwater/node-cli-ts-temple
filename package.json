@@ -60,6 +60,7 @@
   "dependencies": {
     "@types/git-url-parse": "^9.0.0",
     "@types/lodash": "^4.14.168",
+    "@types/semver": "^7.3.4",
     "commander": "^7.0.0",
     "extend": "^3.0.2",
     "fs-extra": "^9.1.0",

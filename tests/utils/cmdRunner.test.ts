@@ -2,7 +2,7 @@ import { ICmdParams } from '../../src/utils/ICmdParams'
 import { runCmd } from '../../src/utils/cmdRunner'
 
 test('cmdRunner run', () => {
-  let runParams: ICmdParams = {
+  const runParams: ICmdParams = {
     cmd: 'git',
     args: ['status']
   }
