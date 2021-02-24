@@ -1,13 +1,21 @@
 import updateNotifier from 'update-notifier'
-import pkg from '../../package.json'
+import packageJsom from '../../package.json'
 
 /**
  * check cli update
  */
 export const checkUpdate = (): void => {
-  const notifier = updateNotifier({ pkg })
-  notifier.notify({ message: 'Run `{updateCommand}` to update.' })
-  if (notifier.update) {
-    console.log(notifier.update)
-  }
+  const notifier = updateNotifier({
+    pkg: {
+      name: packageJsom.name,
+      version: packageJsom.version
+    },
+    // updateCheckInterval: 1000 * 60 * 60 * 24 // 1 day
+    updateCheckInterval: 1000 * 60 * 60 * 24 * 7 // 1 week
+  })
+  // notifier.notify({ message: 'Run `{updateCommand}` to update.' })
+  notifier.notify({ message: 'Run `{updateCommand} -g` to update.' })
+  // if (notifier.update) {
+  //   console.log(notifier.update)
+  // }
 }
