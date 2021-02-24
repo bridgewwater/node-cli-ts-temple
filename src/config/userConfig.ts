@@ -35,7 +35,7 @@ function initDefaultConfigOfSetting(configJsonPath: string, config: ICfgSetting 
 function checkConfigUpdate(configJsonPath: string, config: ICfgSetting | undefined) {
   const userConfigJson = fsExtra.readJsonSync(configJsonPath)
   if (semver.gt(pkgInfo.version, userConfigJson.version)) {
-    const bakConfigJson = `${configJsonPath}.bak`
+    const bakConfigJson = `${configJsonPath}.${userConfigJson.version}.bak`
     console.log(chalk.yellow(`=> config need update at: ${configJsonPath}`))
     fsExtra.copyFileSync(configJsonPath, bakConfigJson)
     console.log(chalk.yellow(`-> back old config at: ${bakConfigJson}`))
