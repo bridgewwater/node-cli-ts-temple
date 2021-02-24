@@ -28,14 +28,21 @@ export abstract class AppMaker implements IAppMaker {
 
   template = ''
 
+  templateBranch: string
+
   fullPath: string
 
-  constructor(name: string, template: string) {
+  constructor(name: string, template: string, branch?: string) {
     this.name = name
     if (lodash.isEmpty(template)) {
       this.template = this.doDefaultTemplate()
     } else {
       this.template = template
+    }
+    if (branch) {
+      this.templateBranch = branch
+    } else {
+      this.templateBranch = this.doDefaultTemplateBranch()
     }
     this.fullPath = path.resolve(path.join(process.cwd(), this.name))
   }
@@ -77,7 +84,7 @@ export abstract class AppMaker implements IAppMaker {
     const currentPath = process.cwd()
     let runParams: ICmdParams = {
       cmd: 'git',
-      args: ['clone', this.template, this.name, '--depth=1']
+      args: ['clone', this.template, this.name, '--depth=1', '-b', this.templateBranch]
     }
 
     // local template, using copy
@@ -152,6 +159,8 @@ export abstract class AppMaker implements IAppMaker {
   abstract onPostCreateApp(): Promise<void>
 
   abstract doDefaultTemplate(): string
+
+  abstract doDefaultTemplateBranch(): string
 
   // eslint-disable-next-line no-unused-vars
   abstract doRemoveCiConfig(workPath: string): void

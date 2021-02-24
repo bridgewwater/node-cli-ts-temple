@@ -41,6 +41,11 @@ export class NodeTSCLIMaker extends AppMaker {
   }
 
   // eslint-disable-next-line class-methods-use-this
+  doDefaultTemplateBranch(): string {
+    return nodeTemplate().templateBranch
+  }
+
+  // eslint-disable-next-line class-methods-use-this
   doRemoveCiConfig(workPath: string): void {
     if (fsExtra.existsSync(path.join(workPath, '.github'))) {
       fsExtra.removeSync(path.join(workPath, '.github'))
