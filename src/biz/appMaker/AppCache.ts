@@ -39,13 +39,13 @@ cachePath path: ${this.cachePath}
     }
 
     if (fsExtra.existsSync(this.cachePath)) {
-      logInfo(`check cache update at: ${this.cachePath}`)
+      logInfo(`-> check cache update at: ${this.cachePath}\nPlease wait...`)
       const runGitPullReturn = gitPullNotLog(this.cachePath)
       if (runGitPullReturn.status) {
         ErrorAndExit(runGitPullReturn.status, `error [ git pull ] at path ${this.cachePath}`)
       }
     } else {
-      logInfo(`download cache at: ${this.cachePath}`)
+      logInfo(`-> download cache at: ${this.cachePath}\nPlease wait...`)
       this.downloadTemplate(cacheFolder, this.cacheAlias, false, false)
     }
   }

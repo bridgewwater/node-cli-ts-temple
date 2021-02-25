@@ -1,7 +1,11 @@
 import path from 'path'
 import fsExtra from 'fs-extra'
-import LineReader from 'n-readlines-next'
-import replace from 'replace-in-file'
+import {
+  addTextLineTail,
+  addTextOneLineAfter,
+  replaceTextLineByLineAtFile,
+  replaceTextLineByLineAtPath
+} from '../common/commonLanguage'
 
 export class MakeFileRefactor {
   ProjectRootPath: string
@@ -19,44 +23,38 @@ export class MakeFileRefactor {
     this.MakefileTargetPath = path.join(this.ProjectRootPath, this.MakefileTarget)
   }
 
-  private replaceTextLineByLine(
-    replacePath: string = this.MakefileTargetPath, fromText: string, toText: string,
-    encoding?: 'utf-8'
-  ) {
-    const liner = new LineReader(replacePath)
-    const lineEach = []
-    let line = liner.next()
-    let mustReplace = false
-    do {
-      const lS = line.toString(encoding)
-      if (lS.search(fromText) !== -1) {
-        lineEach.push(lS.replace(fromText, toText))
-        mustReplace = true
-      } else {
-        lineEach.push(lS)
-      }
-      line = liner.next()
-    } while (line)
-    if (mustReplace) {
-      const newFileContent = lineEach.join('\n')
-      // logDebug(`newFileContent:\n${newFileContent}`)
-      fsExtra.writeFileSync(replacePath, newFileContent)
-    }
-  }
-
   renameTargetLineByLine(fromContent: string, toContent: string): Error | null {
     if (!fsExtra.existsSync(this.MakefileTargetPath)) {
       return new Error(`target makefile not exists: ${this.MakefileTargetPath}`)
     }
-    try {
-      replace.sync({
-        files: this.MakefileTargetPath,
-        from: new RegExp(fromContent, 'g'),
-        to: toContent
-      })
-    } catch (e) {
-      return e
+    return replaceTextLineByLineAtFile(this.MakefileTargetPath, fromContent, toContent)
+  }
+
+  renameRootInclude(from: string, to: string): Error | null {
+    if (!fsExtra.existsSync(this.RootMakefilePath)) {
+      return new Error(`root makefile not exists: ${this.RootMakefilePath}`)
     }
+    const includeFromText = `include ${from}`
+    const includeToText = `include ${to}`
+    replaceTextLineByLineAtPath(this.RootMakefilePath, includeFromText, includeToText)
+    const helpFromText = `help-${from}`
+    const helpToText = `help-${to}`
+    replaceTextLineByLineAtPath(this.RootMakefilePath, helpFromText, helpToText)
+    return null
+  }
+
+  addRootIncludeModule(newModuleName: string, subModuleMKFile: string, helpTaskContent: string): Error | null {
+    if (!fsExtra.existsSync(this.RootMakefilePath)) {
+      return new Error(`root makefile not exists: ${this.RootMakefilePath}`)
+    }
+    const includeContent = `include ${newModuleName}/${subModuleMKFile}`
+    addTextOneLineAfter(this.RootMakefilePath,
+      /^include .*/,
+      includeContent
+    )
+    addTextLineTail(this.RootMakefilePath,
+      /^help: .*/,
+      helpTaskContent)
     return null
   }
 }

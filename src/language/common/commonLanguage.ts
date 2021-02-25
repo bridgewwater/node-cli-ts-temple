@@ -5,9 +5,12 @@ import { logDebug, logWarning } from '../../nlog/nLog'
 import LineReader from 'n-readlines-next'
 import * as fsWalk from '@nodelib/fs.walk'
 import * as path from 'path'
+import replace from 'replace-in-file'
 
 export const replaceTextLineByLineAtPath = (
-  replacePath: string, from: string | RegExp, to: string,
+  replacePath: string,
+  from: string | RegExp,
+  to: string,
   encoding?: 'utf-8'
 ): void => {
   const liner = new LineReader(replacePath, { readChunk: 1024, newLineCharacter: '\n' })
@@ -57,4 +60,134 @@ export const replaceTextByFileSuffix = (from: string | RegExp, to: string, rootP
       replaceTextLineByLineAtPath(value.path, from, to)
     }
   })
+}
+
+export const replaceTextLineByLineAtFile = (
+  targetPath: string, fromContent: string, toContent: string
+): Error | null => {
+  if (!fsExtra.existsSync(targetPath)) {
+    return new Error(`target makefile not exists: ${targetPath}`)
+  }
+  try {
+    replace.sync({
+      files: targetPath,
+      from: new RegExp(fromContent, 'g'),
+      to: toContent
+    })
+  } catch (e) {
+    return e
+  }
+  return null
+}
+
+export const addTextOneLineBefore = (
+  addPath: string,
+  target: string | RegExp,
+  content: string,
+  encoding?: 'utf-8'
+): void => {
+  const liner = new LineReader(addPath)
+  const lineEach = []
+  let line = liner.next()
+  let hasAdd = false
+  do {
+    const lS = line.toString(encoding)
+    if (lS.search(target) !== -1) {
+      if (!hasAdd) {
+        lineEach.push(content)
+        hasAdd = true
+      }
+      lineEach.push(lS)
+    } else {
+      lineEach.push(lS)
+    }
+    line = liner.next()
+  } while (line)
+  const newFileContent = lineEach.join('\n')
+  // logDebug(`newFileContent:\n${newFileContent}`)
+  fsExtra.writeFileSync(addPath, newFileContent)
+}
+
+export const addTextOneLineAfter = (
+  addPath: string,
+  target: string | RegExp,
+  content: string,
+  encoding?: 'utf-8'
+): void => {
+  const liner = new LineReader(addPath)
+  const lineEach = []
+  let line = liner.next()
+  let hasAdd = false
+  do {
+    const lS = line.toString(encoding)
+    if (lS.search(target) !== -1) {
+      lineEach.push(lS)
+      if (!hasAdd) {
+        lineEach.push(content)
+        hasAdd = true
+      }
+    } else {
+      lineEach.push(lS)
+    }
+    line = liner.next()
+  } while (line)
+  const newFileContent = lineEach.join('\n')
+  // logDebug(`newFileContent:\n${newFileContent}`)
+  fsExtra.writeFileSync(addPath, newFileContent)
+}
+
+export const addTextLineHead = (
+  addPath: string,
+  target: string | RegExp,
+  content: string,
+  encoding?: 'utf-8'
+): void => {
+  const liner = new LineReader(addPath)
+  const lineEach = []
+  let line = liner.next()
+  let hasAdd = false
+  do {
+    const lS = line.toString(encoding)
+    if (lS.search(target) !== -1) {
+      if (!hasAdd) {
+        const newLine = content + lS
+        lineEach.push(newLine)
+        hasAdd = true
+      }
+    } else {
+      lineEach.push(lS)
+    }
+    line = liner.next()
+  } while (line)
+  const newFileContent = lineEach.join('\n')
+  // logDebug(`newFileContent:\n${newFileContent}`)
+  fsExtra.writeFileSync(addPath, newFileContent)
+}
+
+export const addTextLineTail = (
+  addPath: string,
+  target: string | RegExp,
+  content: string,
+  encoding?: 'utf-8'
+): void => {
+  const liner = new LineReader(addPath)
+  const lineEach = []
+  let line = liner.next()
+  let hasAdd = false
+  do {
+    const lS = line.toString(encoding)
+    if (lS.search(target) !== -1) {
+      if (!hasAdd) {
+        const newLine = lS + content
+        lineEach.push(newLine)
+        hasAdd = true
+      }
+    } else {
+      lineEach.push(lS)
+    }
+    line = liner.next()
+  } while (line)
+  const newFileContent = lineEach.join('\n')
+  // logDebug(`newFileContent:\n${newFileContent}`)
+  fsExtra.writeFileSync(addPath, newFileContent)
 }
