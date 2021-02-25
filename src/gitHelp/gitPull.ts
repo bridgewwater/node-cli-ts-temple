@@ -6,7 +6,7 @@ export const gitPullNotLog = (path: string = process.cwd()): SpawnSyncReturns<Bu
   logDebug(`cli: git pull at: ${path}`)
   return runCmd({
     cmd: 'git',
-    args: ['pull', '--no-log'],
+    args: ['--no-pager', 'pull'],
     cwd: path
   })
 }
