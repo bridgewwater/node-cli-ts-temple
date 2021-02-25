@@ -1,7 +1,7 @@
 import path from 'path'
 import lodash from 'lodash'
 import { userConfigFolder } from '../../config/userConfig'
-import { logDebug } from '../../nlog/nLog'
+import { logInfo } from '../../nlog/nLog'
 import { AppMaker } from './AppMaker'
 import fsExtra from 'fs-extra'
 import { gitPullNotLog } from '../../gitHelp/gitPull'
@@ -28,9 +28,10 @@ export abstract class AppCache extends AppMaker implements IAppCache {
   }
 
   cacheTemplate(): void {
-    logDebug(`template ${this.template}
+    logInfo(`=> cache template ${this.template}
 template branch: ${this.templateBranch}
 cachePath path: ${this.cachePath}
+\tIf cache error, please remove
 `)
     const cacheFolder = path.dirname(this.cachePath)
     if (!fsExtra.existsSync(cacheFolder)) {
@@ -38,11 +39,13 @@ cachePath path: ${this.cachePath}
     }
 
     if (fsExtra.existsSync(this.cachePath)) {
+      logInfo(`check cache update at: ${this.cachePath}`)
       const runGitPullReturn = gitPullNotLog(this.cachePath)
       if (runGitPullReturn.status) {
         ErrorAndExit(runGitPullReturn.status, `error [ git pull ] at path ${this.cachePath}`)
       }
     } else {
+      logInfo(`download cache at: ${this.cachePath}`)
       this.downloadTemplate(cacheFolder, this.cacheAlias, false, false)
     }
   }
