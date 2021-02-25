@@ -1,6 +1,7 @@
 import { ICmdParams } from './ICmdParams'
 import { spawnSync, SpawnSyncReturns } from 'child_process'
-import { logDebug } from '../nlog/nLog'
+import { logDebug, logError } from '../nlog/nLog'
+import fs from 'fs'
 
 /**
  * run cmd
@@ -10,12 +11,15 @@ import { logDebug } from '../nlog/nLog'
  * @param isStdio - spawnSync default inherit
  */
 export const runCmd = ({
-  args,
   cmd = 'npm',
+  args,
   cwd = process.cwd(),
   isStdio = true
 }: ICmdParams): SpawnSyncReturns<Buffer> => {
   logDebug(`-> runCmd isStdio ${isStdio} at path: ${cwd}\n run: ${cmd} ${args}`)
+  if (!fs.existsSync(cwd)) {
+    logError(`-> runCmd cwd not exists: ${cwd}`)
+  }
   return spawnSync(cmd, args, {
     cwd,
     stdio: isStdio ? 'inherit' : undefined,

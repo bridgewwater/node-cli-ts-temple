@@ -55,7 +55,7 @@ export class NodeTSCLIMaker extends AppMaker {
 
   async onCreateApp(): Promise<void> {
     inquirer.prompt(this.prompts).then(({ git, selectInstall }) => {
-      this.downloadTemplate(true)
+      this.downloadTemplate(process.cwd(), this.name)
       installNodeDependencies(selectInstall, this.fullPath)
       if (git) {
         initGitLocal(this.fullPath)

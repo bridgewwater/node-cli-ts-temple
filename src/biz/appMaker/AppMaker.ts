@@ -12,7 +12,7 @@ import { isPlatformWindows } from '../../utils/systemInfoUtils'
 
 interface IAppMaker {
   // eslint-disable-next-line no-unused-vars
-  downloadTemplate: (removeCiConfig: true) => void
+  downloadTemplate: (runCwd: string, alias: string, removeGit: boolean, removeCiConfig: boolean) => void
 }
 
 interface ICheckPrompt {
@@ -75,16 +75,22 @@ export abstract class AppMaker implements IAppMaker {
     return res
   }
 
-  downloadTemplate(removeCiConfig: true): void {
+  downloadTemplate(runCwd = process.cwd(), alias: string,
+    removeGit = true, removeCiConfig = true): void {
     if (!this.template || this.template === '') {
       ErrorAndExit(-127, 'template is empty')
       return
     }
     logInfo(`use template: ${this.template}`)
-    const currentPath = process.cwd()
+    const currentPath = runCwd
+    let targetAlias = alias
+    if (lodash.isEmpty(targetAlias)) {
+      targetAlias = this.name
+    }
     let runParams: ICmdParams = {
       cmd: 'git',
-      args: ['clone', this.template, this.name, '--depth=1', '-b', this.templateBranch]
+      args: ['clone', this.template, targetAlias, '--depth=1', '-b', this.templateBranch],
+      cwd: runCwd
     }
 
     // local template, using copy
@@ -114,10 +120,13 @@ export abstract class AppMaker implements IAppMaker {
     }
     logVerbose('\n-> template clone complete...\n')
 
-    const targetPath = path.join(currentPath, this.name)
+    const targetPath = path.join(currentPath, targetAlias)
     // remove existing git records
-    fsExtra.removeSync(path.join(targetPath, '.git'))
-    logDebug(`remove .git at path: ${targetPath}`)
+
+    if (removeGit) {
+      fsExtra.removeSync(path.join(targetPath, '.git'))
+      logDebug(`remove .git at path: ${targetPath}`)
+    }
     // remove git action set if has
     if (removeCiConfig) {
       this.doRemoveCiConfig(targetPath)
