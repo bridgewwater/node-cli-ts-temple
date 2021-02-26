@@ -4,7 +4,6 @@ import {
   addTextLineTail,
   addTextOneLineAfter,
   replaceTextLineByLineAtFile,
-  replaceTextLineByLineAtPath
 } from '../common/commonLanguage'
 
 export class MakeFileRefactor {
@@ -34,13 +33,7 @@ export class MakeFileRefactor {
     if (!fsExtra.existsSync(this.RootMakefilePath)) {
       return new Error(`root makefile not exists: ${this.RootMakefilePath}`)
     }
-    const includeFromText = `include ${from}`
-    const includeToText = `include ${to}`
-    replaceTextLineByLineAtPath(this.RootMakefilePath, includeFromText, includeToText)
-    const helpFromText = `help-${from}`
-    const helpToText = `help-${to}`
-    replaceTextLineByLineAtPath(this.RootMakefilePath, helpFromText, helpToText)
-    return null
+    return replaceTextLineByLineAtFile(this.RootMakefilePath, from, to)
   }
 
   addRootIncludeModule(newModuleName: string, subModuleMKFile: string, helpTaskContent: string): Error | null {
