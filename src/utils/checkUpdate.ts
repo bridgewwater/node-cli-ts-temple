@@ -11,7 +11,7 @@ export const checkUpdate = (): void => {
       name: packageJsom.name,
       version: packageJsom.version
     },
-    updateCheckInterval:0 // close check interval
+    updateCheckInterval: 0 // close check interval
     // updateCheckInterval: 1000 * 60 * 60 * 24 // 1 day
     // updateCheckInterval: 1000 * 60 * 60 * 24 * 7 // 1 week
   })

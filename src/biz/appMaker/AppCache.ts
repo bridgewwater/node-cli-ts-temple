@@ -8,7 +8,8 @@ import { gitPullNotLog } from '../../gitHelp/gitPull'
 import { ErrorAndExit } from '../../globalBiz'
 
 interface IAppCache {
-  cacheTemplate: () => void
+  // eslint-disable-next-line no-unused-vars
+  cacheTemplate: (useProxyTemplateUrl: boolean) => void
 }
 
 export abstract class AppCache extends AppMaker implements IAppCache {
@@ -27,11 +28,16 @@ export abstract class AppCache extends AppMaker implements IAppCache {
     this.cachePath = path.resolve(path.join(userConfigFolder(), 'cache', alias))
   }
 
-  cacheTemplate(): void {
+  cacheTemplate(useProxyTemplateUrl: boolean): void {
+    if (useProxyTemplateUrl) {
+      this.cachePath = `${this.cachePath}-proxy`
+      this.cacheAlias = `${this.cacheAlias}-proxy`
+    }
     logInfo(`=> cache template ${this.template}
+useProxyTemplateUrl: ${useProxyTemplateUrl}
 template branch: ${this.templateBranch}
 cachePath path: ${this.cachePath}
-\tIf cache error, please remove
+\tIf cache error, please remove cache and retry
 `)
     const cacheFolder = path.dirname(this.cachePath)
     if (!fsExtra.existsSync(cacheFolder)) {
@@ -46,7 +52,7 @@ cachePath path: ${this.cachePath}
       }
     } else {
       logInfo(`-> download cache at: ${this.cachePath}\nPlease wait...`)
-      this.downloadTemplate(cacheFolder, this.cacheAlias, false, false)
+      this.downloadTemplate(cacheFolder, this.cacheAlias, useProxyTemplateUrl, false, false)
     }
   }
 }

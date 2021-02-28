@@ -1,4 +1,11 @@
 import { logError, logInfo, logWarning, PrintLogFilePath } from './nlog/nLog'
+import { binName } from './utils/pkgInfo'
+
+export const ExitZeroByHelp = (): void => {
+  logInfo(`more info see ${binName()} --help .`)
+  PrintLogFilePath()
+  process.exit(0)
+}
 
 export const ProjectInitComplete = (): void => {
   logInfo('\n✅ Project init complete.')

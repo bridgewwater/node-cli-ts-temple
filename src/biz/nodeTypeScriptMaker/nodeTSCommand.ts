@@ -2,19 +2,37 @@ import commander, { Command } from 'commander'
 import { checkUpdate } from '../../utils/checkUpdate'
 import { binName } from '../../utils/pkgInfo'
 import { NodeTSCLIMaker } from './NodeTSCLIMaker'
+import { nodeTemplate, writeProxyNodeTemplate } from '../../config/userConfig'
+import { ExitZeroByHelp } from '../../globalBiz'
+import { logWarning } from '../../nlog/nLog'
 
 
 export const cliNodeTypeScriptCLICommand = (): commander.Command => {
   const build = new Command('node-ts-cli')
   build
-    .arguments('<targetName>')
     .option('-t, --template <path>', 'template address, support git address and local path')
-    .action(async (targetName, cmd) => {
+    .option('--printProxyTemplate', 'show proxy template')
+    .on('option:printProxyTemplate', (): void => {
       checkUpdate()
-      const nodeTSCLIMaker = new NodeTSCLIMaker(targetName, cmd.template)
+      console.log(`-> now proxy template: ${nodeTemplate().proxyTemplateUrl}`)
+      ExitZeroByHelp()
+    })
+    .option('-p, --proxyTemplate <path>', 'set proxy template, close use --proxyTemplate ""')
+    .on('option:proxyTemplate', (cmd): void => {
+      checkUpdate()
+      if (!cmd) {
+        logWarning('will close use proxyTemplate')
+      }
+      writeProxyNodeTemplate(cmd)
+      ExitZeroByHelp()
+    })
+    .arguments('<appName>')
+    .action(async (appName, cmd) => {
+      checkUpdate()
+      const nodeTSCLIMaker = new NodeTSCLIMaker(appName, cmd.template)
       await nodeTSCLIMaker.execute()
     })
-    .usage('[options] <targetName>')
-    .description(`clone and build project, as: ${binName()} node-ts-cli targetName`)
+    .usage('[options] <appName>')
+    .description(`clone and build project, as: ${binName()} build appName`)
   return build
 }

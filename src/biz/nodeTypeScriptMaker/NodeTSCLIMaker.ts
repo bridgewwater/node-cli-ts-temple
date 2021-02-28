@@ -7,6 +7,7 @@ import { ErrorAndExit, ProjectInitComplete } from '../../globalBiz'
 import inquirer from 'inquirer'
 import { initGitLocal } from '../../gitHelp/gitLocalInit'
 import { installNodeDependencies } from '../../language/node/nodeInstallDependencie'
+import lodash from 'lodash'
 
 export class NodeTSCLIMaker extends AppMaker {
 
@@ -46,6 +47,11 @@ export class NodeTSCLIMaker extends AppMaker {
   }
 
   // eslint-disable-next-line class-methods-use-this
+  doProxyTemplateBranch(): string {
+    return nodeTemplate().proxyTemplateUrl
+  }
+
+  // eslint-disable-next-line class-methods-use-this
   doRemoveCiConfig(workPath: string): void {
     if (fsExtra.existsSync(path.join(workPath, '.github'))) {
       fsExtra.removeSync(path.join(workPath, '.github'))
@@ -54,8 +60,19 @@ export class NodeTSCLIMaker extends AppMaker {
   }
 
   async onCreateApp(): Promise<void> {
-    inquirer.prompt(this.prompts).then(({ git, selectInstall }) => {
-      this.downloadTemplate(process.cwd(), this.name)
+    if (!lodash.isEmpty(nodeTemplate().proxyTemplateUrl)) {
+      this.prompts.splice(0, 0, {
+        type: 'confirm',
+        name: 'useProxyTemplateUrl',
+        message: `use proxyTemplateUrl: [ ${nodeTemplate().proxyTemplateUrl} ] ?`,
+        default: false
+      })
+    }
+    inquirer.prompt(this.prompts).then(({
+      useProxyTemplateUrl,
+      git, selectInstall
+    }) => {
+      this.downloadTemplate(process.cwd(), this.name, useProxyTemplateUrl)
       installNodeDependencies(selectInstall, this.fullPath)
       if (git) {
         initGitLocal(this.fullPath)

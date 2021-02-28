@@ -12,7 +12,9 @@ import { isPlatformWindows } from '../../utils/systemInfoUtils'
 
 interface IAppMaker {
   // eslint-disable-next-line no-unused-vars
-  downloadTemplate: (runCwd: string, alias: string, removeGit: boolean, removeCiConfig: boolean) => void
+  downloadTemplate: (runCwd: string, alias: string,
+    // eslint-disable-next-line no-unused-vars
+    useProxyTemplateUrl: boolean, removeGit: boolean, removeCiConfig: boolean) => void
 }
 
 interface ICheckPrompt {
@@ -32,6 +34,8 @@ export abstract class AppMaker implements IAppMaker {
 
   fullPath: string
 
+  proxyTemplateUrl: string
+
   constructor(name: string, template: string, branch?: string) {
     this.name = name
     if (lodash.isEmpty(template)) {
@@ -45,6 +49,7 @@ export abstract class AppMaker implements IAppMaker {
       this.templateBranch = this.doDefaultTemplateBranch()
     }
     this.fullPath = path.resolve(path.join(process.cwd(), this.name))
+    this.proxyTemplateUrl = this.doProxyTemplateBranch()
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -75,13 +80,17 @@ export abstract class AppMaker implements IAppMaker {
     return res
   }
 
-  downloadTemplate(runCwd = process.cwd(), alias: string,
+  downloadTemplate(runCwd = process.cwd(), alias: string, useProxyTemplateUrl: boolean,
     removeGit = true, removeCiConfig = true): void {
     if (!this.template || this.template === '') {
       ErrorAndExit(-127, 'template is empty')
       return
     }
-    logInfo(`use template: ${this.template}`)
+    let downloadURL = this.template
+    if (useProxyTemplateUrl) {
+      downloadURL = this.proxyTemplateUrl
+    }
+    logInfo(`use template: ${downloadURL}`)
     const currentPath = runCwd
     let targetAlias = alias
     if (lodash.isEmpty(targetAlias)) {
@@ -89,19 +98,19 @@ export abstract class AppMaker implements IAppMaker {
     }
     let runParams: ICmdParams = {
       cmd: 'git',
-      args: ['clone', this.template, targetAlias, '--depth=1', '-b', this.templateBranch],
+      args: ['clone', downloadURL, targetAlias, '--depth=1', '-b', this.templateBranch],
       cwd: runCwd
     }
 
     // local template, using copy
-    const isGitTemplate = /\.git/.test(this.template)
+    const isGitTemplate = /\.git/.test(downloadURL)
     if (!isGitTemplate) {
       let cmd: CMDType = 'cp'
-      let args = [this.template, currentPath, '/e', '/xd', 'node_modules']
+      let args = [downloadURL, currentPath, '/e', '/xd', 'node_modules']
 
       if (isPlatformWindows()) {
         cmd = 'robocopy'
-        args = [this.template, currentPath]
+        args = [downloadURL, currentPath]
       }
 
       runParams = {
@@ -170,6 +179,8 @@ export abstract class AppMaker implements IAppMaker {
   abstract doDefaultTemplate(): string
 
   abstract doDefaultTemplateBranch(): string
+
+  abstract doProxyTemplateBranch(): string
 
   // eslint-disable-next-line no-unused-vars
   abstract doRemoveCiConfig(workPath: string): void
