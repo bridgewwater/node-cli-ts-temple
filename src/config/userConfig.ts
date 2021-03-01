@@ -8,6 +8,7 @@ import { logDebug, logInfo } from '../nlog/nLog'
 import { binName, pkgInfo } from '../utils/pkgInfo'
 import semver from 'semver'
 import chalk from 'chalk'
+import lodash from 'lodash'
 
 export const userConfigFolder = (): string => {
   let userHome = USER_HOME
@@ -15,6 +16,14 @@ export const userConfigFolder = (): string => {
     userHome = '~'
   }
   return path.join(userHome, `.${binName()}`)
+}
+
+export const userConfigCacheFolder = (): string => {
+  let userHome = USER_HOME
+  if (!userHome) {
+    userHome = '~'
+  }
+  return path.join(userConfigFolder(), 'cache')
 }
 
 export const userConfigJsonPath = (): string => {
@@ -78,7 +87,15 @@ export const printUserHomeConfig = (): void => {
   logDebug(loadUserHomeConfig()?.toString())
 }
 
-export const writeProxyNodeTemplate = (proxyTemplate: string): void => {
+const removeProxyCacheByAlias = (alias: string) => {
+  const proxyCachePath = path.join(userConfigCacheFolder(), `${alias}-proxy`)
+  if (fsExtra.existsSync(proxyCachePath)) {
+    fsExtra.removeSync(proxyCachePath)
+    console.log(chalk.yellow(`-> remove ${alias} proxy at: ${proxyCachePath}`))
+  }
+}
+
+export const writeProxyNodeTemplate = (proxyTemplate: string, alias: string): void => {
   logInfo(`-> now set proxyTemplate: ${proxyTemplate}`)
   const nowConfig = loadUserHomeConfig()
   nowConfig.nodeTemplate.proxyTemplateUrl = proxyTemplate
@@ -86,4 +103,7 @@ export const writeProxyNodeTemplate = (proxyTemplate: string): void => {
     replacer: null,
     spaces: '\t'
   })
+  if (lodash.isEmpty(proxyTemplate)) {
+    removeProxyCacheByAlias(alias)
+  }
 }

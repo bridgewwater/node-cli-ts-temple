@@ -21,9 +21,9 @@ export const cliNodeTypeScriptCLICommand = (): commander.Command => {
     .on('option:proxyTemplate', (cmd): void => {
       checkUpdate()
       if (!cmd) {
-        logWarning('will close use proxyTemplate')
+        logWarning('Warning: will close use proxyTemplate')
       }
-      writeProxyNodeTemplate(cmd)
+      writeProxyNodeTemplate(cmd, 'node-ts-cli')
       ExitZeroByHelp()
     })
     .arguments('<appName>')
