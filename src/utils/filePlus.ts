@@ -20,7 +20,13 @@ export const isPathDirectorySync = (p: string): boolean => fs.lstatSync(p).isDir
  */
 export const isDirEmptySync = (p: string): boolean => fs.readdirSync(p).length === 0
 
-export const recursivelyDeleteEmptyDirectories = (rootPath: string, targetPath: string): Error | null => {
+/**
+ * recursively delete empty directories sync
+ * @param rootPath - delete root path
+ * @param targetPath - want delete target path
+ * @return null is success, err will show Error
+ */
+export const recursivelyDeleteEmptyDirectoriesSync = (rootPath: string, targetPath: string): Error | null => {
   if (!fsExtra.existsSync(rootPath)) {
     return new Error(`recursively delete empty directories root not exists: ${rootPath}`)
   }
@@ -35,7 +41,7 @@ export const recursivelyDeleteEmptyDirectories = (rootPath: string, targetPath: 
   }
   const subPath = path.dirname(targetPath)
   if (subPath !== rootPath) {
-    return recursivelyDeleteEmptyDirectories(rootPath, subPath)
+    return recursivelyDeleteEmptyDirectoriesSync(rootPath, subPath)
   }
   return null
 }
