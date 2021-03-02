@@ -35,6 +35,7 @@ export const cliNodeTypeScriptCLICommand = (): commander.Command => {
     })
     .usage('[options] <appName>')
     .description(`clone and build project, as: ${binName()} ${alias} targetName
-  default template use: ${nodeTemplate().templateUrl}`)
+    default template use: ${nodeTemplate().templateUrl}
+`)
   return build
 }
