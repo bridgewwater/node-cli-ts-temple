@@ -12,7 +12,7 @@ interface IAppCache {
   cacheTemplate: (useProxyTemplateUrl: boolean) => void
 }
 
-export abstract class AppCache extends AppMaker implements IAppCache {
+export abstract class AppCacheMaker extends AppMaker implements IAppCache {
 
   cachePath: string
 
