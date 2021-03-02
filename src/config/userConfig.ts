@@ -75,16 +75,16 @@ export const loadUserHomeConfig = (): ICfgSetting => {
   return userConfigJson
 }
 
+export const printUserHomeConfig = (): void => {
+  logDebug(loadUserHomeConfig()?.toString())
+}
+
 export const nodeTemplate = (): NodeTemplate => {
   return loadUserHomeConfig().nodeTemplate
 }
 
-export const androidTemplate = (): NodeTemplate => {
-  return loadUserHomeConfig().androidTemplate
-}
-
-export const printUserHomeConfig = (): void => {
-  logDebug(loadUserHomeConfig()?.toString())
+export const androidJavaTemplate = (): NodeTemplate => {
+  return loadUserHomeConfig().androidJavaTemplate
 }
 
 const removeProxyCacheByAlias = (alias: string) => {

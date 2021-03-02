@@ -7,7 +7,7 @@ export interface NodeTemplate {
   templateBranch: string
 }
 
-export interface AndroidTemplate {
+export interface AndroidJavaTemplate {
   templateUrl: string
   proxyTemplateUrl: string
   templateBranch: string
@@ -17,7 +17,7 @@ export interface ICfgSetting {
   name: string
   version: string
   nodeTemplate: NodeTemplate
-  androidTemplate: AndroidTemplate
+  androidJavaTemplate: AndroidJavaTemplate
 }
 
 export const CfgSetting: ICfgSetting = {
@@ -28,7 +28,7 @@ export const CfgSetting: ICfgSetting = {
     proxyTemplateUrl: '',
     templateBranch: 'main'
   },
-  androidTemplate: {
+  androidJavaTemplate: {
     templateUrl: 'https://github.com/bridgewwater/android-java-temple.git',
     proxyTemplateUrl: '',
     templateBranch: 'main'

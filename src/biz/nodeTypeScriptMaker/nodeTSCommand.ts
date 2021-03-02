@@ -8,7 +8,8 @@ import { logWarning } from '../../nlog/nLog'
 
 
 export const cliNodeTypeScriptCLICommand = (): commander.Command => {
-  const build = new Command('node-ts-cli')
+  const alias = 'node-ts-cli'
+  const build = new Command(alias)
   build
     .option('-t, --template <path>', 'template address, support git address and local path')
     .option('--printProxyTemplate', 'show proxy template')
@@ -23,7 +24,7 @@ export const cliNodeTypeScriptCLICommand = (): commander.Command => {
       if (!cmd) {
         logWarning('Warning: will close use proxyTemplate')
       }
-      writeProxyNodeTemplate(cmd, 'node-ts-cli')
+      writeProxyNodeTemplate(cmd, alias)
       ExitZeroByHelp()
     })
     .arguments('<appName>')
@@ -33,6 +34,7 @@ export const cliNodeTypeScriptCLICommand = (): commander.Command => {
       await nodeTSCLIMaker.execute()
     })
     .usage('[options] <appName>')
-    .description(`clone and build project, as: ${binName()} build appName`)
+    .description(`clone and build project, as: ${binName()} ${alias} targetName
+  default template use: ${nodeTemplate().templateUrl}`)
   return build
 }
