@@ -80,6 +80,24 @@ export const replaceTextLineByLineAtFile = (
   return null
 }
 
+export const replaceTextLineAtFile = (
+  targetPath: string, fromContent: string | RegExp, toContent: string
+): Error | null => {
+  if (!fsExtra.existsSync(targetPath)) {
+    return new Error(`target makefile not exists: ${targetPath}`)
+  }
+  try {
+    replace.sync({
+      files: targetPath,
+      from: fromContent,
+      to: toContent
+    })
+  } catch (e) {
+    return e
+  }
+  return null
+}
+
 export const addTextOneLineBefore = (
   addPath: string,
   target: string | RegExp,

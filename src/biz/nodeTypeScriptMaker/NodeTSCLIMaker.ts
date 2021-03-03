@@ -2,16 +2,23 @@ import { AppMaker } from '../appMaker/AppMaker'
 import { nodeTemplate } from '../../config/userConfig'
 import path from 'path'
 import fsExtra from 'fs-extra'
-import { logDebug, logInfo } from '../../nlog/nLog'
+import { logDebug, logInfo, logVerbose } from '../../nlog/nLog'
 import { ErrorAndExit, ProjectInitComplete } from '../../globalBiz'
 import inquirer from 'inquirer'
 import { initGitLocal } from '../../gitHelp/gitLocalInit'
 import { installNodeDependencies } from '../../language/node/nodeInstallDependencie'
 import lodash from 'lodash'
+import { TypeScriptProjectRefactor } from '../../language/node/TypeScriptProjectRefactor'
 
 export class NodeTSCLIMaker extends AppMaker {
 
   prompts = [
+    {
+      type: 'input',
+      name: 'projectRepoURL',
+      message: `new project git path [${this.parseTemplateRepoUrl()}]?`,
+      default: this.parseTemplateRepoUrl()
+    },
     {
       type: 'confirm',
       name: 'git',
@@ -69,10 +76,37 @@ export class NodeTSCLIMaker extends AppMaker {
       })
     }
     inquirer.prompt(this.prompts).then(({
+      projectRepoURL,
       useProxyTemplateUrl,
       git, selectInstall
     }) => {
+      const checkPrompts = [
+        {
+          itemName: 'projectRepoURL',
+          target: projectRepoURL,
+          canEmpty: false
+        }
+      ]
+      if (this.checkPrompts(checkPrompts)) {
+        ErrorAndExit(-127, 'please check error above')
+      }
+      logVerbose(`generating project
+project repo: ${projectRepoURL}`)
+      logDebug(`generating project
+template project repo: ${this.parseTemplateRepoUrl()}
+template project Name: ${nodeTemplate().templateProjectName}`)
       this.downloadTemplate(process.cwd(), this.name, useProxyTemplateUrl)
+      // remove package-lock.json
+      const packageLockJsonPath = path.join(this.fullPath, 'package-lock.json')
+      if (fsExtra.existsSync(packageLockJsonPath)) {
+        logDebug(`-> remove package-lock.json at: ${packageLockJsonPath}`)
+      }
+      const typeScriptProjectRefactor = new TypeScriptProjectRefactor(this.fullPath)
+      typeScriptProjectRefactor.renameByFileString(this.parseTemplateRepoUrl(), projectRepoURL)
+      logDebug(`renameByFileTextLineByLine: from ${nodeTemplate().templateProjectName}
+to: ${this.name}`)
+      typeScriptProjectRefactor.renameByFileTextLineByLine(nodeTemplate().templateProjectName, this.name)
+      typeScriptProjectRefactor.renameTsFileName(nodeTemplate().templateProjectName, this.name, '.ts')
       installNodeDependencies(selectInstall, this.fullPath)
       if (git) {
         initGitLocal(this.fullPath)

@@ -5,12 +5,14 @@ export interface NodeTemplate {
   templateUrl: string
   proxyTemplateUrl: string
   templateBranch: string
+  templateProjectName: string
 }
 
 export interface AndroidJavaTemplate {
   templateUrl: string
   proxyTemplateUrl: string
   templateBranch: string
+  templateProjectName: string
 }
 
 export interface ICfgSetting {
@@ -26,11 +28,13 @@ export const CfgSetting: ICfgSetting = {
   nodeTemplate: {
     templateUrl: 'https://github.com/bridgewwater/node-cli-ts-temple.git',
     proxyTemplateUrl: '',
-    templateBranch: 'main'
+    templateBranch: 'main',
+    templateProjectName: 'node-cli-ts-temple'
   },
   androidJavaTemplate: {
     templateUrl: 'https://github.com/bridgewwater/android-java-temple.git',
     proxyTemplateUrl: '',
-    templateBranch: 'main'
+    templateBranch: 'main',
+    templateProjectName: 'android-java-temple'
   }
 }
