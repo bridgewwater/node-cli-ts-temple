@@ -9,6 +9,9 @@ try {
   initCommand()
 } catch (e) {
   console.log(e)
-  ErrorAndExit(-127, `maybe config error, please remove config at: ${userConfigJsonPath()}
-or use: npm install -g ${binName()} to fix`)
+  ErrorAndExit(
+    -127,
+    `maybe config error, please remove config at: ${userConfigJsonPath()}
+or use: npm install -g ${binName()} to fix`
+  )
 }
