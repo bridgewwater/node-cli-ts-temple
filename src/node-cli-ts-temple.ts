@@ -3,7 +3,7 @@ import { binName, pkgInfo } from './utils/pkgInfo'
 import { checkUpdate } from './utils/checkUpdate'
 import { initUserHomeConfig, userConfigFolder } from './config/userConfig'
 import { cleanUserHomeLogs, logDebug, noNoColor, openVerbose, verbose, writeLogsUser } from './nlog/nLog'
-import { cliNodeTypeScriptCLICommand } from './biz/nodeTypeScriptMaker/nodeTSCommand'
+import { cliNodeTypeScriptCLICommand } from './biz/nodeTypeScriptMaker/cliNodeTypeScriptCLICommand'
 
 const program = new Command(binName())
 
