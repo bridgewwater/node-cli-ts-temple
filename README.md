@@ -11,6 +11,17 @@ node-cli-ts-temple
 
 this is for node CLI programming project.
 
+## usage
+
+```bash
+$ npm install -g node-cli-ts-temple
+$ node-cli-ts-temple --help
+# make node TypeScript cli project
+$ node-cli-ts-temple node-ts-cli --help
+```
+
+more use see [doc/README.md](doc/README.md)
+
 ## character
 
 - support code check `prettier` `eslint` `tslint`
