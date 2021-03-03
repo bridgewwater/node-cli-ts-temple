@@ -28,7 +28,7 @@ export class NodeTSCLIMaker extends AppMaker {
     {
       type: 'list',
       name: 'selectInstall',
-      message: 'how to install dependencies',
+      message: 'how to install dependencies:',
       default: 'npm',
       choices: [
         {
