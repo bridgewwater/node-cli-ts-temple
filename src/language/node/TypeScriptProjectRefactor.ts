@@ -23,7 +23,7 @@ export class TypeScriptProjectRefactor {
       })
       return null
     } catch (e) {
-      return e
+      return Error(e.toString())
     }
   }
 
@@ -46,7 +46,7 @@ export class TypeScriptProjectRefactor {
       })
       return null
     } catch (e) {
-      return e
+      return Error(e.toString())
     }
   }
 

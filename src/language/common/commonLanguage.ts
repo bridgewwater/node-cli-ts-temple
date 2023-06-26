@@ -75,7 +75,7 @@ export const replaceTextLineByLineAtFile = (
       to: toContent
     })
   } catch (e) {
-    return e
+    return Error(e.toString())
   }
   return null
 }
@@ -93,7 +93,7 @@ export const replaceTextLineAtFile = (
       to: toContent
     })
   } catch (e) {
-    return e
+    return Error(e.toString())
   }
   return null
 }

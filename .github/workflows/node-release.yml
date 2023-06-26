@@ -1,0 +1,62 @@
+# need env: NPM_TOKEN add at to action secrets, npm token doc see https://docs.npmjs.com/about-access-tokens/
+name: node-release
+
+on:
+  push:
+    tags:
+      - '*' # Push events to matching *, i.e. 1.0.0 v1.0, v20.15.10
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 'lts/*'
+      - run: |
+          node -v
+          npm install
+          npm test
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 'lts/*'
+          registry-url: https://registry.npmjs.org/
+      - run: npm install
+      - run: npm run build
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+  node-gh-release:
+    needs: publish-npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+      - name: Build check
+        run: |
+          npm install
+          npm run build --if-present
+          npm test
+      - uses: softprops/action-gh-release@master
+        name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          ## with permissions to create releases in the other repo
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          #  body_path: ${{ github.workspace }}-CHANGELOG.txt
+          prerelease: true
+          # https://github.com/isaacs/node-glob
+          # files: |
+          #   **/*.tar.gz
+          #   **/*.sha256
