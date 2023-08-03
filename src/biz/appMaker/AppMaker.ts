@@ -80,6 +80,7 @@ export abstract class AppMaker implements IAppMaker {
     return res
   }
 
+  // eslint-disable-next-line default-param-last
   downloadTemplate(runCwd = process.cwd(), alias: string, useProxyTemplateUrl: boolean,
     removeGit = true, removeCiConfig = true): void {
     if (!this.template || this.template === '') {

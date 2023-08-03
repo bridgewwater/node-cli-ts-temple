@@ -8,8 +8,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'airbnb-base/legacy',
-    'prettier',
-    'prettier/@typescript-eslint'
+    'prettier'
   ],
   env:{
     "jest": true

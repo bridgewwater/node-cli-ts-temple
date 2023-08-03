@@ -3,6 +3,9 @@ module.exports = {
   upgrade: false,
   format: 'group',
   reject: [
-    'chalk'
+    'chalk',
+    'rollup',
+    '@rollup/plugin-json',
+    'rollup-plugin-typescript2'
   ]
 }

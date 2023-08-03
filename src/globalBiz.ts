@@ -19,6 +19,7 @@ export const WarnToSafeExit = (message: string): void => {
   process.exit(0)
 }
 
+// eslint-disable-next-line default-param-last
 export const ErrorAndExit = (exitCode = -128, message: string): void => {
   logError(message)
   PrintLogFilePath()

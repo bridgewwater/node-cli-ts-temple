@@ -18,6 +18,9 @@ updates:
       day: "sunday"
     open-pull-requests-limit: 10
     ignore:
-    - dependency-name: chalk
+    - dependency-name: 'chalk'
 #      versions:
 #      - ">= 2.a, < 3"
+    - dependency-name: 'rollup'
+    - dependency-name: '@rollup/plugin-json'
+    - dependency-name: 'rollup-plugin-typescript2'
