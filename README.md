@@ -2,12 +2,20 @@ node-cli-ts-temple
 
 [https://github.com/bridgewwater/node-cli-ts-temple](https://github.com/bridgewwater/node-cli-ts-temple)
 
-this is for node CLI programming project.
+this is for node TS-CLI programming project.
 
-[![node-ci](https://github.com/bridgewwater/node-cli-ts-temple/workflows/node-ci/badge.svg)](https://github.com/bridgewwater/node-cli-ts-temple/actions/workflows/node-ci.yml)
-[![NPM Version](http://img.shields.io/npm/v/node-cli-ts-temple.svg?style=flat)](https://www.npmjs.org/package/node-cli-ts-temple)
-[![NPM Downloads](https://img.shields.io/npm/dm/node-cli-ts-temple.svg?style=flat)](https://npmcharts.com/compare/node-cli-ts-temple?minimal=true)
-[![codecov](https://codecov.io/gh/bridgewwater/node-cli-ts-temple/branch/master/graph/badge.svg)](https://codecov.io/gh/bridgewwater/node-cli-ts-temple)
+[![npm version](https://img.shields.io/npm/v/node-cli-temple)](https://www.npmjs.com/package/node-cli-temple)
+[![node lts version](https://img.shields.io/node/v-lts/node-cli-temple)](https://www.npmjs.com/package/node-cli-temple)
+[![npm license](https://img.shields.io/npm/l/node-cli-temple)](https://www.npmjs.com/package/node-cli-temple)
+[![npm download month](https://img.shields.io/npm/dm/node-cli-temple)](https://www.npmjs.com/package/node-cli-temple)
+[![npm collaborators](https://img.shields.io/npm/collaborators/node-cli-temple)](https://www.npmjs.com/package/node-cli-temple)
+
+[![ci](https://github.com/bridgewwater/node-cli-ts-temple/workflows/ci/badge.svg)](https://github.com/bridgewwater/node-cli-ts-temple/actions/workflows/ci.yml)
+
+[![GitHub license](https://img.shields.io/github/license/bridgewwater/node-cli-ts-temple)](https://github.com/bridgewwater/node-cli-ts-temple)
+[![codecov](https://codecov.io/gh/bridgewwater/node-cli-ts-temple/branch/main/graph/badge.svg)](https://codecov.io/gh/bridgewwater/node-cli-ts-temple)
+[![GitHub latest SemVer tag)](https://img.shields.io/github/v/tag/bridgewwater/node-cli-ts-temple)](https://github.com/bridgewwater/node-cli-ts-temple/tags)
+[![GitHub release)](https://img.shields.io/github/v/release/bridgewwater/node-cli-ts-temple)](https://github.com/bridgewwater/node-cli-ts-temple/releases)
 
 # Features
 

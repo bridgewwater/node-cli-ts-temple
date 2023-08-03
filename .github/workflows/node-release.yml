@@ -2,52 +2,94 @@
 name: node-release
 
 on:
-  push:
-    tags:
-      - '*' # Push events to matching *, i.e. 1.0.0 v1.0, v20.15.10
-
-permissions:
-  contents: write
+  workflow_call: # https://docs.github.com/actions/using-workflows/reusing-workflows#using-inputs-and-secrets-in-a-reusable-workflow
+    inputs:
+      dry-run:
+        description: 'Run npm publish with the --dry-run flag'
+        default: false
+        required: false
+        type: boolean
+      npm_version:
+        description: 'tag name, if not tag will null'
+        default: ''
+        required: false
+        type: string
+      tag_name:
+        description: 'tag name, if not tag will null'
+        default: ''
+        required: false
+        type: string
+      tag_changes:
+        description: 'tag changes, if not tag will null'
+        default: ''
+        required: false
+        type: string
+      upload_artifact_name:
+        description: 'upload artifact name'
+        default: ''
+        required: false
+        type: string
 
 jobs:
-  build:
+  build-upload:
+    defaults:
+      run:
+        shell: bash
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 'lts/*'
-      - run: |
-          node -v
+      -
+        name: Install dependencies
+        run: |
           npm install
+          node -v
+
+      -
+        name: Run code check
+        run: |
+          npm run lint
           npm test
+
+      - name: Check Release archive
+        if: ${{ inputs.upload_artifact_name != null }}
+        run: |
+          echo "release archive at: ${{ env.ASSET }}"
+          echo " archive sha256sum at: ${{ env.ASSET }}.sha256"
+
+      - name: upload-artifact
+        uses: actions/upload-artifact@v3
+        if: ${{ inputs.upload_artifact_name != null }}
+        with:
+          name: ${{ inputs.upload_artifact_name }}
+          retention-days: 5
+          if-no-files-found: error
+          path: |
+            ${{ env.ASSET }}
+            ${{ env.ASSET }}.sha256
+
   publish-npm:
-    needs: build
+    needs:
+      - build-upload
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-node@v3
         with:
           node-version: 'lts/*'
           registry-url: https://registry.npmjs.org/
-      - run: npm install
+      -
+        name: Install dependencies
+        run: |
+          npm install
+          node -v
+
       - uses: JS-DevTools/npm-publish@v2
+        if: ${{ inputs.verison_name != null }}
         with:
           token: ${{ secrets.NPM_TOKEN }}
-  node-gh-release:
-    needs: publish-npm
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: softprops/action-gh-release@master
-        name: Create Release
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          ## with permissions to create releases in the other repo
-          token: "${{ secrets.GITHUB_TOKEN }}"
-          #  body_path: ${{ github.workspace }}-CHANGELOG.txt
-          prerelease: true
-          # https://github.com/isaacs/node-glob
-          # files: |
-          #   **/*.tar.gz
-          #   **/*.sha2566
+          tag: ${{ inputs.npm_version }}
+          dry-run: ${{ inputs.dry-run }}

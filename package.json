@@ -1,16 +1,7 @@
 {
-  "name": "node-cli-ts-temple",
   "version": "1.0.0",
-  "description": "",
-  "author": "template-user",
-  "keywords": [
-    "node",
-    "cli",
-    "node-cli-ts-temple"
-  ],
-  "bin": {
-    "node-cli-ts-temple": "dist/index.js"
-  },
+  "name": "node-cli-ts-temple",
+  "description": "node-cli-ts-temple",
   "scripts": {
     "clean:rimraf": "rimraf node_modules package-lock.json",
     "format": "prettier --write --parser typescript src/*.ts src/**/*.ts tests/**/*.ts",
@@ -20,12 +11,13 @@
     "dev": "nodemon",
     "build": "rollup -c",
     "tsc": "tsc",
-    "test": "jest",
-    "jest:coverage": "jest --collectCoverage",
+    "test": "jest --ci",
+    "jest:coverage": "jest --ci --coverage",
+    "jest:collectCoverage": "jest --collectCoverage",
     "cli:help": "node dist/index.js -h"
   },
-  "jest": {
-    "testEnvironment": "node"
+  "bin": {
+    "node-cli-ts-temple": "dist/index.js"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
@@ -39,7 +31,6 @@
     "@types/update-notifier": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^4.14.1",
     "@typescript-eslint/parser": "^4.14.1",
-    "chalk": "^4.1.0",
     "eslint": "^7.18.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-base": "^14.2.1",
@@ -68,6 +59,7 @@
     "git-url-parse": "^11.4.4",
     "inquirer": "^7.3.3",
     "log4js": "^6.3.0",
+    "chalk": "^4.1.0",
     "moment": "^2.13.0",
     "n-readlines-next": "^1.0.3",
     "replace-in-file": "^6.2.0",
@@ -75,9 +67,15 @@
     "update-notifier": "^5.0.1"
   },
   "engines": {
-    "node": ">=12"
+    "node": ">=16"
   },
-  "license": "MIT",
+  "author": "template-user",
+  "keywords": [
+    "node",
+    "cli",
+    "node-cli-ts-temple"
+  ],
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/bridgewwater/node-cli-ts-temple.git"
