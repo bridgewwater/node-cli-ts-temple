@@ -56,14 +56,9 @@ more use see [doc/README.md](doc/README.md)
 
 | item     | version |
 |:---------|:--------|
-| node     | 10.+    |
-| prettier | ^2.2.1  |
-| eslint   | ^7.18.0 |
-| tslint   | ^6.1.3  |
-| jest     | ^26.6.3 |
+| node     | 16.+    |
 | rollup   | ^2.38.0 |
-| nodemon  | ^2.0.7  |
-| log4js   | ^6.3.0  |
+| nodemon  | ^3.0.1  |
 
 ## dev
 
