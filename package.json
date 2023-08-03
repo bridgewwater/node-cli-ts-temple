@@ -29,7 +29,7 @@
     "@types/jest": "^26.0.20",
     "@types/sleep": "^0.0.8",
     "@types/update-notifier": "^5.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^4.14.1",
     "eslint": "^7.18.0",
     "eslint-config-airbnb": "^18.2.1",
