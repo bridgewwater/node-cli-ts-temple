@@ -57,7 +57,7 @@
     "extend": "^3.0.2",
     "fs-extra": "^11.1.1",
     "git-url-parse": "^13.1.0",
-    "inquirer": "^9.2.10",
+    "inquirer": "^9.2.11",
     "log4js": "^6.9.1",
     "chalk": "^4.1.0",
     "moment": "^2.29.4",
