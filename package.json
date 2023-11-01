@@ -64,7 +64,7 @@
     "n-readlines-next": "^1.0.3",
     "replace-in-file": "^7.0.1",
     "sleep": "^6.3.0",
-    "update-notifier": "^6.0.2"
+    "update-notifier": "^7.0.0"
   },
   "engines": {
     "node": ">=16"
