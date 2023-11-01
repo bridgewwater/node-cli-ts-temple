@@ -87,7 +87,7 @@ jobs:
           npm install
           node -v
 
-      - uses: JS-DevTools/npm-publish@v2
+      - uses: JS-DevTools/npm-publish@v3
         if: ${{ inputs.verison_name != null }}
         with:
           token: ${{ secrets.NPM_TOKEN }}
