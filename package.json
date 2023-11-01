@@ -26,7 +26,7 @@
     "@types/extend": "^3.0.2",
     "@types/fs-extra": "^11.0.1",
     "@types/inquirer": "^9.0.3",
-    "@types/jest": "^29.5.5",
+    "@types/jest": "^29.5.7",
     "@types/sleep": "^0.0.10",
     "@types/update-notifier": "^6.0.4",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
