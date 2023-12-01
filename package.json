@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.2",
-    "@commitlint/config-conventional": "^17.6.7",
+    "@commitlint/config-conventional": "^18.4.3",
     "@rollup/plugin-json": "^4.1.0",
     "@types/extend": "^3.0.3",
     "@types/fs-extra": "^11.0.4",
