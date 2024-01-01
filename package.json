@@ -62,7 +62,7 @@
     "chalk": "^4.1.0",
     "moment": "^2.29.4",
     "n-readlines-next": "^1.0.3",
-    "replace-in-file": "^7.0.1",
+    "replace-in-file": "^7.1.0",
     "sleep": "^6.3.0",
     "update-notifier": "^6.0.2"
   },
